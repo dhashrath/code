@@ -113,7 +113,6 @@
 * [Range Sum Query - Immutable](problems/range-sum-query-immutable.md)
 * [Range Sum Query 2D - Immutable](problems/range-sum-query-2d-immutable.md)
 * [Range Sum Query - Mutable](problems/range-sum-query-mutable.md)
-* [Coin Change](problems/coin-change.md)
 * [Power of Three](problems/power-of-three.md)
 * [Odd Even Linked List](problems/odd-even-linked-list.md)
 * [Top K Frequent Elements](problems/top-k-frequent-elements.md)
