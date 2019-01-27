@@ -1,0 +1,80 @@
+
+
+#### Approach #1: Create New Lists [Accepted]
+
+**Intuition and Algorithm**
+
+If there are $$N$$ nodes in the linked list `root`, then there are $$N / k$$ items in each part, plus the first $$N \% k$$ parts have an extra item.  We can count $$N$$ with a simple loop.
+
+Now for each part, we have calculated how many nodes that part will have: `width + (i < remainder ? 1 : 0)`.  We create a new list and write the part to that list.
+
+Our solution showcases constructs of the form `a = b = c`.  Note that this syntax behaves differently for different languages.
+
+
+```java
+public class Solution {
+    public int wiggleMaxLength(int[] nums) {
+        if (nums.length < 2)
+            return nums.length;
+        int[] up = new int[nums.length];
+        int[] down = new int[nums.length];
+        for (int i = 1; i < nums.length; i++) {
+            for(int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    up[i] = Math.max(up[i],down[j] + 1);
+                } else if (nums[i] < nums[j]) {
+                    down[i] = Math.max(down[i],up[j] + 1);
+                }
+            }
+        }
+        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+    }
+}```
+
+
+**Complexity Analysis**
+
+* Time Complexity: $$O(N + k)$$, where $$N$$ is the number of nodes in the given list.  If $$k$$ is large, it could still require creating many new empty lists.
+
+* Space Complexity: $$O(max(N, k))$$, the space used in writing the answer.
+
+---
+#### Approach #2: Split Input List [Accepted]
+
+**Intuition and Algorithm**
+
+As in *Approach #1*, we know the size of each part.  Instead of creating new lists, we will split the input list directly and return a list of pointers to nodes in the original list as appropriate.
+
+Our solution proceeds similarly.  For a part of size `L = width + (i < remainder ? 1 : 0)`, instead of stepping `L` times, we will step `L-1` times, and our final time will also sever the link between the last node from the previous part and the first node from the next part.
+
+
+```java
+public class Solution {
+    public int wiggleMaxLength(int[] nums) {
+        if (nums.length < 2)
+            return nums.length;
+        int[] up = new int[nums.length];
+        int[] down = new int[nums.length];
+        for (int i = 1; i < nums.length; i++) {
+            for(int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    up[i] = Math.max(up[i],down[j] + 1);
+                } else if (nums[i] < nums[j]) {
+                    down[i] = Math.max(down[i],up[j] + 1);
+                }
+            }
+        }
+        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+    }
+}```
+
+
+**Complexity Analysis**
+
+* Time Complexity: $$O(N + k)$$, where $$N$$ is the number of nodes in the given list.  If $$k$$ is large, it could still require creating many new empty lists.
+
+* Space Complexity: $$O(k)$$, the additional space used in writing the answer.
+
+---
+
+Analysis written by: [@awice](https://leetcode.com/awice).

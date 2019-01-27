@@ -1,0 +1,91 @@
+
+
+## Solution
+---
+#### Approach 1: Sort
+
+**Intuition and Algorithm**
+
+For all elements like `A[i] = v`, let's write the indices `i` in sorted order of their values `v`.  For example with `A[0] = 7, A[1] = 2, A[2] = 5, A[3] = 4`, we can write the order of indices `i=1, i=3, i=2, i=0`.
+
+Then, whenever we write an index `i`, we know there was a ramp of width `i - min(indexes_previously_written)` (if this quantity is positive).  We can keep track of the minimum of all indexes previously written as `m`.
+
+
+```java
+public class Solution {
+    public int wiggleMaxLength(int[] nums) {
+        if (nums.length < 2)
+            return nums.length;
+        int[] up = new int[nums.length];
+        int[] down = new int[nums.length];
+        for (int i = 1; i < nums.length; i++) {
+            for(int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    up[i] = Math.max(up[i],down[j] + 1);
+                } else if (nums[i] < nums[j]) {
+                    down[i] = Math.max(down[i],up[j] + 1);
+                }
+            }
+        }
+        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+    }
+}```
+
+
+**Complexity Analysis**
+
+* Time Complexity:  $$O(N \log N)$$, where $$N$$ is the length of `A`.
+
+* Space Complexity:  $$O(N)$$, depending on the implementation of the sorting function.
+<br />
+<br />
+
+
+---
+#### Approach 2: Binary Search Candidates
+
+**Intuition**
+
+Consider `i` in decreasing order.  We want to find the largest `j` with `A[j] >= A[i]` if it exists.
+
+Thus, the candidates for `j` are decreasing: if there is `j1 < j2` and `A[j1] <= A[j2]` then we strictly prefer `j2`.
+
+**Algorithm**
+
+Let's keep a list of these candidates `j`.  For example, with `A = [0,8,2,7,5]`, the candidates for `i = 0` would be `candidates = [(v=5, i=4), (v=7, i=3), (v=8, i=1)]`.  We keep the list of `candidates` in decreasing order of `i` and increasing order of `v`.
+
+Now we can binary search to find the largest `j` with `A[j] >= A[i]`: it's the first one in this list of candidates with `v >= A[i]`.
+
+
+```java
+public class Solution {
+    public int wiggleMaxLength(int[] nums) {
+        if (nums.length < 2)
+            return nums.length;
+        int[] up = new int[nums.length];
+        int[] down = new int[nums.length];
+        for (int i = 1; i < nums.length; i++) {
+            for(int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    up[i] = Math.max(up[i],down[j] + 1);
+                } else if (nums[i] < nums[j]) {
+                    down[i] = Math.max(down[i],up[j] + 1);
+                }
+            }
+        }
+        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+    }
+}```
+
+
+**Complexity Analysis**
+
+* Time Complexity:  $$O(N \log N)$$, where $$N$$ is the length of `A`.
+
+* Space Complexity:  $$O(N)$$.
+<br />
+<br />
+
+
+---
+Analysis written by: [@awice](https://leetcode.com/awice).

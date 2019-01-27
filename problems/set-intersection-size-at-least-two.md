@@ -1,0 +1,52 @@
+
+
+#### Approach #1: Greedy [Accepted]
+
+**Intuition**
+
+Let's try to solve a simpler problem: what is the answer when the set intersection size is at least *one*?
+
+Sort the points.  Take the last interval `[s, e]`, which point on this interval will be in `S`?  Since every other interval has start point `<= s`, it is strictly better to choose `s` as the start.  So we can repeatedly take `s` in our set `S` and remove all intervals containing `s`.
+
+We will try to extend this solution to the case when we want an intersection of size two.
+
+**Algorithm**
+
+For each interval, we will perform the algorithm described above, storing a `todo` *multiplicity* which starts at `2`.  As we identify points in `S`, we will subtract from these multiplicities as appropriate.
+
+One case that is important to handle is the following:
+`[[1, 2], [2, 3], [2, 4], [4, 5]]`.  If we put `4, 5` in `S`, then we put `2` in `S`, when handling `[2, 3]` we need to put `3` in `S`, not `2` which was already put.
+
+We can handle this case succinctly by sorting intervals `[s, e]` by `s` ascending, then `e` descending.  This makes it so that any interval encountered with the same `s` has the lowest possible `e`, and so it has the highest *multiplicity*.  When at interval `[s, e]` and choosing points to be included into `S`, it will always be the case that the start of the interval (either `s` or `s, s+1`) will be unused.
+
+
+```java
+public class Solution {
+    public int wiggleMaxLength(int[] nums) {
+        if (nums.length < 2)
+            return nums.length;
+        int[] up = new int[nums.length];
+        int[] down = new int[nums.length];
+        for (int i = 1; i < nums.length; i++) {
+            for(int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    up[i] = Math.max(up[i],down[j] + 1);
+                } else if (nums[i] < nums[j]) {
+                    down[i] = Math.max(down[i],up[j] + 1);
+                }
+            }
+        }
+        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+    }
+}```
+
+
+**Complexity Analysis**
+
+* Time Complexity: $$O(N^2)$$, where $$N$$ is the length of `intervals`.
+
+* Space Complexity: $$O(N)$$.
+
+---
+
+Analysis written by: [@awice](https://leetcode.com/awice).

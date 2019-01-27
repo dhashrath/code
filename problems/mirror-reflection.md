@@ -1,0 +1,97 @@
+
+
+## Solution
+---
+#### Approach 1: Simulation
+
+**Intuition**
+
+The initial ray can be described as going from an origin `(x, y) = (0, 0)` in the direction `(rx, ry) = (p, q)`.  From this, we can figure out which wall it will meet and where, and what the appropriate new ray will be (based on reflection.)  We keep simulating the ray until it finds it's destination.
+
+**Algorithm**
+
+The parameterized position of the laser after time `t` will be `(x + rx * t, y + ry * t)`.  From there, we know when it will meet the east wall (if `x + rx * t == p`), and so on.  For a positive (and nonnegligible) time `t`, it meets the next wall.
+
+We can then calculate how the ray reflects.  If it hits an east or west wall, then `rx *= -1`, else `ry *= -1`.
+
+In Java, care must be taken with floating point operations.
+
+
+```java
+public class Solution {
+    public int wiggleMaxLength(int[] nums) {
+        if (nums.length < 2)
+            return nums.length;
+        int[] up = new int[nums.length];
+        int[] down = new int[nums.length];
+        for (int i = 1; i < nums.length; i++) {
+            for(int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    up[i] = Math.max(up[i],down[j] + 1);
+                } else if (nums[i] < nums[j]) {
+                    down[i] = Math.max(down[i],up[j] + 1);
+                }
+            }
+        }
+        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+    }
+}```
+
+
+**Complexity Analysis**
+
+* Time Complexity:  $$O(p)$$.  We can prove (using *Approach #2*) that the number of bounces is bounded by this.
+
+* Space Complexity:  $$O(1)$$.
+<br />
+<br />
+
+
+---
+#### Approach 2: Mathematical
+
+**Intuition and Algorithm**
+
+Instead of modelling the ray as a bouncing line, model it as a straight line through reflections of the room.
+
+For example, if `p = 2, q = 1`, then we can reflect the room horizontally, and draw a straight line from `(0, 0)` to `(4, 2)`.  The ray meets the receptor `2`, which was reflected from `(0, 2)` to `(4, 2)`.
+
+In general, the ray goes to the first integer point `(kp, kq)` where `k` is an integer, and `kp` and `kq` are multiples of `p`.  Thus, the goal is just to find the smallest `k` for which `kq` is a multiple of `p`.
+
+The mathematical answer is `k = p / gcd(p, q)`.
+
+
+```java
+public class Solution {
+    public int wiggleMaxLength(int[] nums) {
+        if (nums.length < 2)
+            return nums.length;
+        int[] up = new int[nums.length];
+        int[] down = new int[nums.length];
+        for (int i = 1; i < nums.length; i++) {
+            for(int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    up[i] = Math.max(up[i],down[j] + 1);
+                } else if (nums[i] < nums[j]) {
+                    down[i] = Math.max(down[i],up[j] + 1);
+                }
+            }
+        }
+        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+    }
+}```
+
+
+**Complexity Analysis**
+
+* Time Complexity:  $$O(\log P)$$, the complexity of the `gcd` operation.
+
+* Space Complexity:  $$O(1)$$.
+<br />
+<br />
+
+
+---
+
+
+Analysis written by: [@awice](https://leetcode.com/awice).

@@ -1,0 +1,43 @@
+
+
+#### Approach #1: Backtracking [Accepted]
+
+**Intuition and Algorithm**
+
+There are only 4 cards and only 4 operations that can be performed.  Even when all operations do not commute, that gives us an upper bound of $$12 * 6 * 2 * 4 * 4 * 4 = 9216$$ possibilities, which makes it feasible to just try them all.  Specifically, we choose two numbers (with order) in 12 ways and perform one of 4 operations (12 * 4). Then, with 3 remaining numbers, we choose 2 of them and perform one of 4 operations (6 * 4).  Finally we have two numbers left and make a final choice of 2 * 4 possibilities.
+
+We will perform 3 binary operations (`+, -, *, /` are the operations) on either our numbers or resulting numbers.  Because `-` and `/` do not commute, we must be careful to consider both `a / b` and `b / a`.
+
+For every way to remove two numbers `a, b` in our list, and for each possible result they can make, like `a+b`, `a/b`, etc., we will recursively solve the problem on this smaller list of numbers.
+
+
+```java
+public class Solution {
+    public int wiggleMaxLength(int[] nums) {
+        if (nums.length < 2)
+            return nums.length;
+        int[] up = new int[nums.length];
+        int[] down = new int[nums.length];
+        for (int i = 1; i < nums.length; i++) {
+            for(int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    up[i] = Math.max(up[i],down[j] + 1);
+                } else if (nums[i] < nums[j]) {
+                    down[i] = Math.max(down[i],up[j] + 1);
+                }
+            }
+        }
+        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+    }
+}```
+
+
+**Complexity Analysis**
+
+* Time Complexity: $$O(1)$$.  There is a hard limit of 9216 possibilities, and we do $$O(1)$$ work for each of them.
+
+* Space Complexity: $$O(1)$$.  Our intermediate arrays are at most 4 elements, and the number made is bounded by an $$O(1)$$ factor.
+
+---
+
+Analysis written by: [@awice](https://leetcode.com/awice)

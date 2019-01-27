@@ -1,0 +1,59 @@
+
+
+## Solution
+---
+#### Approach 1: Mathematical
+
+**Intuition**
+
+Call the move that takes the `K`th letter from the beginning and puts it on the end, a "*`K`-kick*" move.
+
+Examining 1-kick moves, they let us consider the string as a "necklace" that may be rotated freely, where each bead of the necklace corresponds to a letter in the string.  (Formally, this is the equivalence class under 1-kick moves.)
+
+Examining 2-kick moves (in the context of treating the string as a necklace), they allow us to swap the positions of two adjacent beads.  Thus, with 2-kick moves, every permutation of necklace is possible.  (To actually construct the necklace, we bring the second smallest bead to be after the smallest, then the third smallest to be after the second smallest, and so on.)
+
+The previous insight may be difficult to find.  Another strategy is to write a brute force program to examine the result of 2-kick moves - then we might notice that 2-kick moves allow any permutation of the string.
+
+Yet another strategy might be to explicitly construct new moves based on previous moves.  If we perform a 2 kick move followed by many 1 kick moves, we can move a string like `"xyzzzzzz" -> "xzzzzzzy" -> "yxzzzzzz"`, proving we can swap the positions of any two adjacent letters.
+
+**Algorithm**
+
+If `K = 1`, only rotations of `S` are possible, and the answer is the smallest rotation.
+
+If `K > 1`, any permutation of `S` is possible, and the answer is the letters of `S` written in lexicographic order.
+
+
+```java
+public class Solution {
+    public int wiggleMaxLength(int[] nums) {
+        if (nums.length < 2)
+            return nums.length;
+        int[] up = new int[nums.length];
+        int[] down = new int[nums.length];
+        for (int i = 1; i < nums.length; i++) {
+            for(int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    up[i] = Math.max(up[i],down[j] + 1);
+                } else if (nums[i] < nums[j]) {
+                    down[i] = Math.max(down[i],up[j] + 1);
+                }
+            }
+        }
+        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+    }
+}```
+
+
+**Complexity Analysis**
+
+* Time Complexity:  $$O(N^2)$$, where $$N$$ is the length of `S`.
+
+* Space Complexity:  $$O(N^2)$$.
+<br />
+<br />
+
+
+---
+
+
+Analysis written by: [@awice](https://leetcode.com/awice).
