@@ -1,4 +1,6 @@
-#summary* [Two Sum](problems/two-sum.md)
+#summary
+
+* [Two Sum](problems/two-sum.md)
 * [Add Two Numbers](problems/add-two-numbers.md)
 * [Longest Substring Without Repeating Characters](problems/longest-substring-without-repeating-characters.md)
 * [Median of Two Sorted Arrays](problems/median-of-two-sorted-arrays.md)
