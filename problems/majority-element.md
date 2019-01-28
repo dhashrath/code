@@ -1,3 +1,4 @@
+#Majority Element
 
 ```java
 public class Solution {

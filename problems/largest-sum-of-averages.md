@@ -1,3 +1,4 @@
+#Largest Sum of Averages
 
 ```java
 public class Solution {

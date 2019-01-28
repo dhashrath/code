@@ -1,3 +1,4 @@
+#Power of Three
 
 ```java
 public class Solution {

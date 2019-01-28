@@ -1,3 +1,4 @@
+#Solve the Equation
 
 ```java
 public class Solution {

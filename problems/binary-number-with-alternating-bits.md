@@ -1,3 +1,4 @@
+#Binary Number with Alternating Bits
 
 ```java
 public class Solution {

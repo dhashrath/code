@@ -1,3 +1,4 @@
+#First Unique Character in a String
 
 ```java
 public class Solution {

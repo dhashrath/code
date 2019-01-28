@@ -1,3 +1,4 @@
+#Count The Repetitions
 
 ```java
 public class Solution {

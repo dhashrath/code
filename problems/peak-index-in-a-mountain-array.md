@@ -1,3 +1,4 @@
+#Peak Index in a Mountain Array
 
 ```java
 public class Solution {

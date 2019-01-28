@@ -1,3 +1,4 @@
+#Split Array With Same Average
 
 ```java
 public class Solution {

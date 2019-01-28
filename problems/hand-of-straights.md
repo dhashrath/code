@@ -1,3 +1,4 @@
+#Hand of Straights
 
 ```java
 public class Solution {

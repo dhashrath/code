@@ -1,3 +1,4 @@
+#Smallest Rotation with Highest Score
 
 ```java
 public class Solution {

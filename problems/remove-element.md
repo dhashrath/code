@@ -1,3 +1,4 @@
+#Remove Element
 
 ```java
 public class Solution {

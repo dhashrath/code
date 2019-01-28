@@ -1,3 +1,4 @@
+#Maximize Distance to Closest Person
 
 ```java
 public class Solution {

@@ -1,3 +1,4 @@
+#Kth Smallest Number in Multiplication Table
 
 ```java
 public class Solution {

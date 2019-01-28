@@ -1,3 +1,4 @@
+#Minimum Cost to Hire K Workers
 
 ```java
 public class Solution {

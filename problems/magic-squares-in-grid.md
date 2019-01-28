@@ -1,3 +1,4 @@
+#Magic Squares In Grid
 
 ```java
 public class Solution {

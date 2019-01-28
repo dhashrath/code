@@ -1,3 +1,4 @@
+#Remove Duplicates from Sorted Array
 
 ```java
 public class Solution {
