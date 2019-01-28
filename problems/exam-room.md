@@ -1,23 +1,4 @@
 
-
----
-#### Approach 1: Maintain Sorted Positions
-
-**Intuition**
-
-We'll maintain `ExamRoom.students`, a sorted `list` (or `TreeSet` in Java) of positions the students are currently seated in.
-
-**Algorithm**
-
-The `ExamRoom.leave(p)` operation is clear - we will just `list.remove` (or `TreeSet.remove`) the student from `ExamRoom.students`.
-
-Let's focus on the `ExamRoom.seat() : int` operation.  For each pair of adjacent students `i` and `j`, the maximum distance to the closest student is `d = (j - i) / 2`, achieved in the left-most seat `i + d`.  Otherwise, we could also sit in the left-most seat, or the right-most seat.
-
-Finally, we should handle the case when there are no students separately.
-
-For more details, please review the comments made in the implementations.
-
-
 ```java
 public class Solution {
     public int wiggleMaxLength(int[] nums) {
@@ -38,13 +19,3 @@ public class Solution {
     }
 }```
 
-
-**Complexity Analysis**
-
-* Time Complexity:  Each `seat` operation is $$O(P)$$, (where $$P$$ is the number of students sitting), as we iterate through every student.  Each `leave` operation is $$O(P)$$ ($$\log P$$ in Java).
-
-* Space Complexity:  $$O(P)$$, the space used to store the positions of each student sitting.
-
----
-
-Analysis written by: [@awice](https://leetcode.com/awice).

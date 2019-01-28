@@ -1,14 +1,4 @@
 
-
-## Solution
----
-#### Approach: Using **subquery** and `MAX()` function [Accepted]
-
-**Algorithm**
-
-Use subquery to select all the numbers appearing just one time.
-
-
 ```java
 public class Solution {
     public int wiggleMaxLength(int[] nums) {
@@ -29,8 +19,6 @@ public class Solution {
     }
 }```
 
-
-Then choose the biggest one using `MAX()`.
 
 ```java
 public class Solution {

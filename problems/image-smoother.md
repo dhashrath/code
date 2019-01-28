@@ -1,15 +1,4 @@
 
-
----
-#### Approach #1: Iterate Through Grid
-
-**Intuition and Algorithm**
-
-For each cell in the grid, look at the immediate neighbors - up to 9 of them, including the original cell.
-
-Then, we will add the sum of the neighbors into `ans[r][c]` while recording `count`, the number of such neighbors.  The final answer is the sum divided by the count.
-
-
 ```java
 public class Solution {
     public int wiggleMaxLength(int[] nums) {
@@ -30,13 +19,3 @@ public class Solution {
     }
 }```
 
-
-**Complexity Analysis**
-
-* Time Complexity: $$O(N)$$, where $$N$$ is the number of pixels in our image.  We iterate over every pixel.
-
-* Space Complexity: $$O(N)$$, the size of our answer.
-
----
-
-Analysis written by: [@awice](https://leetcode.com/awice).

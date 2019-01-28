@@ -1,15 +1,4 @@
 
-
----
-#### Approach #1: Depth-First Search [Accepted]
-
-**Intuition and Algorithm**
-
-When visiting a room for the first time, look at all the keys in that room.  For any key that hasn't been used yet, add it to the todo list (`stack`) for it to be used.
-
-See the comments of the code for more details.
-
-
 ```java
 public class Solution {
     public int wiggleMaxLength(int[] nums) {
@@ -30,13 +19,3 @@ public class Solution {
     }
 }```
 
-
-**Complexity Analysis**
-
-* Time Complexity:  $$O(N + E)$$, where $$N$$ is the number of rooms, and $$E$$ is the total number of keys.
-
-* Space Complexity:  $$O(N)$$ in additional space complexity, to store `stack` and `seen`.
-
----
-
-Analysis written by: [@awice](https://leetcode.com/awice).

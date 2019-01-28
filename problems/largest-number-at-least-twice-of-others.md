@@ -1,28 +1,4 @@
 
-
-
-
-#### Approach #1: Linear Scan [Accepted]
-
-
-
-**Intuition and Algorithm**
-
-
-
-Scan through the array to find the unique largest element `m`, keeping track of it's index `maxIndex`.
-
-
-
-Scan through the array again.  If we find some `x != m` with `m < 2*x`, we should return `-1`.
-
-
-
-Otherwise, we should return `maxIndex`.
-
-
-
-
 ```java
 public class Solution {
     public int wiggleMaxLength(int[] nums) {
@@ -43,22 +19,3 @@ public class Solution {
     }
 }```
 
-
-
-**Complexity Analysis**
-
-
-
-* Time Complexity: $$O(N)$$ where $$N$$ is the length of `nums`.
-
-
-
-* Space Complexity: $$O(1)$$, the space used by our `int` variables.
-
-
-
----
-
-
-
-Analysis written by: [@awice](https://leetcode.com/awice).

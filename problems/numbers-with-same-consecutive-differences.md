@@ -1,22 +1,4 @@
 
-
-## Solution
----
-#### Approach 1: Brute Force
-
-**Intuition**
-
-Let's try to write some number in the answer digit by digit.
-
-For each digit except the first, there are at most 2 choices for that digit.  This means that there are at most $$9 * 2^8$$ possible 9 digit numbers, for example.  This is small enough to brute force.
-
-**Algorithm**
-
-An $$N$$ digit number is just an $$N-1$$ digit number with a final digit added.  If the $$N-1$$ digit number ends in a digit $$d$$, then the $$N$$ digit number will end in $$d-K$$ or $$d+K$$ (provided these are digits in the range $$[0,9]$$).  We store these numbers in a `Set` structure to avoid duplicates.
-
-Also, we should be careful about leading zeroes -- only 1 digit numbers will start with `0`.
-
-
 ```java
 public class Solution {
     public int wiggleMaxLength(int[] nums) {
@@ -37,15 +19,3 @@ public class Solution {
     }
 }```
 
-
-**Complexity Analysis**
-
-* Time Complexity:  $$O(2^N)$$.
-
-* Space Complexity:  $$O(2^N)$$.
-<br />
-<br />
-
-
----
-Analysis written by: [@awice](https://leetcode.com/awice).

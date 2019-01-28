@@ -1,14 +1,4 @@
 
-
-## Solution
----
-#### Approach 1: Simulation
-
-**Intuition and Algorithm**
-
-Simulate the revealing process with a deck set to `[0, 1, 2, ...]`.  If for example this deck is revealed in the order `[0, 2, 4, ...]` then we know we need to put the smallest card in index `0`, the second smallest card in index `2`, the third smallest card in index `4`, etc.
-
-
 ```java
 public class Solution {
     public int wiggleMaxLength(int[] nums) {
@@ -29,17 +19,3 @@ public class Solution {
     }
 }```
 
-
-**Complexity Analysis**
-
-* Time Complexity:  $$O(N \log N)$$, where $$N$$ is the length of `deck`.
-
-* Space Complexity:  $$O(N)$$.
-<br />
-<br />
-
-
----
-
-
-Analysis written by: [@awice](https://leetcode.com/awice).

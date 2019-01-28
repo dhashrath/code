@@ -1,18 +1,4 @@
 
-
-#### Approach #1: Depth-First Search [Accepted]
-
-**Intuition**
-
-We perform the algorithm explained in the problem description: paint the starting pixels, plus adjacent pixels of the same color, and so on.
-
-**Algorithm**
-
-Say `color` is the color of the starting pixel.  Let's floodfill the starting pixel: we change the color of that pixel to the new color, then check the 4 neighboring pixels to make sure they are valid pixels of the same `color`, and of the valid ones, we floodfill those, and so on.
-
-We can use a function `dfs` to perform a floodfill on a target pixel.
-
-
 ```java
 public class Solution {
     public int wiggleMaxLength(int[] nums) {
@@ -33,14 +19,3 @@ public class Solution {
     }
 }```
 
-
-
-**Complexity Analysis**
-
-* Time Complexity: $$O(N)$$, where $$N$$ is the number of pixels in the image.  We might process every pixel.
-
-* Space Complexity: $$O(N)$$, the size of the implicit call stack when calling `dfs`.
-
----
-
-Analysis written by: [@awice](https://leetcode.com/awice).

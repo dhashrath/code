@@ -1,44 +1,23 @@
 
-
-
-
-## Solution
-
----
-
-#### Approach 1: Two Maps
-
-
-
-**Intuition and Algorithm**
-
-
-
-If say, the first letter of the pattern is `"a"`, and the first letter of the word is `"x"`, then in the permutation, `"a"` must map to `"x"`.
-
-
-
-We can write this bijection using two maps: a forward map $$\text{m1}$$ and a backwards map $$\text{m2}$$.
-
-
-
-$$
-
-\text{m1} : \text{"a"} \rightarrow \text{"x"}
-
-$$
-
-$$
-
-\text{m2} : \text{"x"} \rightarrow \text{"a"}
-
-$$
-
-
-
-Then, if there is a contradiction later, we can catch it via one of the two maps.  For example, if the `(word, pattern)` is `("aa", "xy")`, we will catch the mistake in $$\text{m1}$$ (namely, $$\text{m1}(\text{"a"}) = \text{"x"} = \text{"y"}$$).  Similarly, with `(word, pattern) = ("ab", "xx")`, we will catch the mistake in $$\text{m2}$$.
-
-
+```java
+public class Solution {
+    public int wiggleMaxLength(int[] nums) {
+        if (nums.length < 2)
+            return nums.length;
+        int[] up = new int[nums.length];
+        int[] down = new int[nums.length];
+        for (int i = 1; i < nums.length; i++) {
+            for(int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    up[i] = Math.max(up[i],down[j] + 1);
+                } else if (nums[i] < nums[j]) {
+                    down[i] = Math.max(down[i],up[j] + 1);
+                }
+            }
+        }
+        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+    }
+}```
 
 
 ```java
@@ -61,93 +40,3 @@ public class Solution {
     }
 }```
 
-
-
-**Complexity Analysis**
-
-
-
-* Time Complexity:  $$O(N * K)$$, where $$N$$ is the number of words, and $$K$$ is the length of each word.
-
-
-
-* Space Complexity:  $$O(N * K)$$, the space used by the answer.
-
-<br />
-
-<br />
-
-
-
-
-
----
-
-#### Approach 2: One Map
-
-
-
-**Intuition and Algorithm**
-
-
-
-As in *Approach 1*, we can have some forward map $$\text{m1} : \mathbb{L} \rightarrow \mathbb{L}$$, where $$\mathbb{L}$$ is the set of letters.  
-
-
-
-However, instead of keeping track of the reverse map $$\text{m2}$$, we could simply make sure that every value $$\text{m1}(x)$$ in the codomain is reached at most once.  This would guarantee the desired permutation exists.
-
-
-
-So our algorithm is this: after defining $$\text{m1}(x)$$ in the same way as *Approach 1* (the forward map of the permutation), afterwards we make sure it reaches distinct values.
-
-
-
-
-```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
-    }
-}```
-
-
-
-**Complexity Analysis**
-
-
-
-* Time Complexity:  $$O(N * K)$$, where $$N$$ is the number of words, and $$K$$ is the length of each word.
-
-
-
-* Space Complexity:  $$O(N * K)$$, the space used by the answer.
-
-<br />
-
-<br />
-
-
-
-
-
----
-
-
-
-
-
-Analysis written by: [@awice](https://leetcode.com/awice).

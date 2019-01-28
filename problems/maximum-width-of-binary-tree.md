@@ -1,19 +1,23 @@
 
-
-#### Approach Framework
-
-**Explanation**
-
-As we need to reach every node in the given tree, we will have to traverse the tree, either with a depth-first search, or with a breadth-first search.
-
-The main idea in this question is to give each node a `position` value. If we go down the left neighbor, then `position -> position * 2`; and if we go down the right neighbor, then `position -> position * 2 + 1`. This makes it so that when we look at the position values `L` and `R` of two nodes with the same depth, the width will be `R - L + 1`.
-
----
-#### Approach #1: Breadth-First Search [Accepted]
-
-**Intuition and Algorithm**
-
-Traverse each node in breadth-first order, keeping track of that node's position.  For each depth, the first node reached is the left-most, while the last node reached is the right-most.
+```java
+public class Solution {
+    public int wiggleMaxLength(int[] nums) {
+        if (nums.length < 2)
+            return nums.length;
+        int[] up = new int[nums.length];
+        int[] down = new int[nums.length];
+        for (int i = 1; i < nums.length; i++) {
+            for(int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    up[i] = Math.max(up[i],down[j] + 1);
+                } else if (nums[i] < nums[j]) {
+                    down[i] = Math.max(down[i],up[j] + 1);
+                }
+            }
+        }
+        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+    }
+}```
 
 
 ```java
@@ -36,50 +40,3 @@ public class Solution {
     }
 }```
 
-
-**Complexity Analysis**
-
-* Time Complexity: $$O(N)$$ where $$N$$ is the number of nodes in the input tree.  We traverse every node.
-
-* Space Complexity: $$O(N)$$, the size of our `queue`.
-
----
-#### Approach #2: Depth-First Search [Accepted]
-
-**Intuition and Algorithm**
-
-Traverse each node in depth-first order, keeping track of that node's position.  For each depth, the position of the first node reached of that depth will be kept in `left[depth]`.
-
-Then, for each node, a candidate width is `pos - left[depth] + 1`.  We take the maximum of the candidate answers.
-
-
-```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
-    }
-}```
-
-
-**Complexity Analysis**
-
-* Time Complexity: $$O(N)$$ where $$N$$ is the number of nodes in the input tree.  We traverse every node.
-
-* Space Complexity: $$O(N)$$, the size of the implicit call stack in our DFS.
-
----
-
-Analysis written by: [@awice](https://leetcode.com/awice).

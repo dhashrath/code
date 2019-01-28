@@ -1,14 +1,4 @@
 
-
-## Solution
----
-#### Approach 1: Counting
-
-**Intuition and Algorithm**
-
-Every uncommon word occurs exactly once in total.  We can count the number of occurrences of every word, then return ones that occur exactly once.
-
-
 ```java
 public class Solution {
     public int wiggleMaxLength(int[] nums) {
@@ -29,17 +19,3 @@ public class Solution {
     }
 }```
 
-
-**Complexity Analysis**
-
-* Time Complexity:  $$O(M + N)$$, where $$M, N$$ are the lengths of `A` and `B` respectively.
-
-* Space Complexity:  $$O(M + N)$$, the space used by `count`.
-<br />
-<br />
-
-
----
-
-
-Analysis written by: [@awice](https://leetcode.com/awice).

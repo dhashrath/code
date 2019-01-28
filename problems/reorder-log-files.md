@@ -1,22 +1,4 @@
 
-
-## Solution
----
-#### Approach 1: Custom Sort
-
-**Intuition and Algorithm**
-
-Instead of sorting in the default order, we'll sort in a custom order we specify.
-
-The rules are:
-
-* Letter-logs come before digit-logs;
-* Letter-logs are sorted alphanumerically, by content then identifier;
-* Digit-logs remain in the same order.
-
-It is straightforward to translate these ideas into code.
-
-
 ```java
 public class Solution {
     public int wiggleMaxLength(int[] nums) {
@@ -37,17 +19,3 @@ public class Solution {
     }
 }```
 
-
-**Complexity Analysis**
-
-* Time Complexity:  $$O(\mathcal{A}\log \mathcal{A})$$, where $$\mathcal{A}$$ is the total content of `logs`.
-
-* Space Complexity:  $$O(\mathcal{A})$$.
-<br />
-<br />
-
-
----
-
-
-Analysis written by: [@awice](https://leetcode.com/awice).

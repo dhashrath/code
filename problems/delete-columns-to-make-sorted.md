@@ -1,18 +1,4 @@
 
-
-## Solution
----
-#### Approach 1: Greedy
-
-**Intuition**
-
-If a column isn't sorted, it can't be part of the final answer.
-
-**Algorithm**
-
-For each column, check if its sorted.  If it isn't, it must be deleted, so we add 1 to the final answer.
-
-
 ```java
 public class Solution {
     public int wiggleMaxLength(int[] nums) {
@@ -33,17 +19,3 @@ public class Solution {
     }
 }```
 
-
-**Complexity Analysis**
-
-* Time Complexity:  $$O(\mathcal{A})$$, where $$\mathcal{A}$$ is the total *content* of `A`.
-
-* Space Complexity:  $$O(1)$$.
-<br />
-<br />
-
-
----
-
-
-Analysis written by: [@awice](https://leetcode.com/awice).

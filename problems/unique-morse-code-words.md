@@ -1,15 +1,4 @@
 
-
----
-#### Approach #1: Hash Set [Accepted]
-
-**Intuition and Algorithm**
-
-We can transform each `word` into it's Morse Code representation.
-
-After, we put all transformations into a set `seen`, and return the size of the set.
-
-
 ```java
 public class Solution {
     public int wiggleMaxLength(int[] nums) {
@@ -30,13 +19,3 @@ public class Solution {
     }
 }```
 
-
-**Complexity Analysis**
-
-* Time Complexity:  $$O(S)$$, where $$S$$ is the sum of the lengths of words in `words`.  We iterate through each character of each word in `words`.
-
-* Space Complexity: $$O(S)$$.
-
----
-
-Analysis written by: [@awice](https://leetcode.com/awice).
