@@ -1,4 +1,4 @@
-#Beautiful Array
+#### Beautiful Array
 
 ```java
 public class Solution {
