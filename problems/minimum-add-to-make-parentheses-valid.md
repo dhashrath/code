@@ -1,22 +1,32 @@
 #### Minimum Add to Make Parentheses Valid
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public int minAddToMakeValid(String S) {
+        int ans = 0, bal = 0;
+        for (int i = 0; i < S.length(); ++i) {
+            bal += S.charAt(i) == '(' ? 1 : -1;
+            // It is guaranteed bal >= -1
+            if (bal == -1) {
+                ans++;
+                bal++;
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        return ans + bal;
     }
 }```
+
+
+```python
+class Solution(object):
+    def minAddToMakeValid(self, S):
+        ans = bal = 0
+        for symbol in S:
+            bal += 1 if symbol == '(' else -1
+            # It is guaranteed bal >= -1
+            if bal == -1:
+                ans += 1
+                bal += 1
+        return ans + bal```
 

@@ -2,84 +2,78 @@
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+    public int lengthOfLongestSubstring(String s) {
+        int n = s.length();
+        int ans = 0;
+        for (int i = 0; i < n; i++)
+            for (int j = i + 1; j <= n; j++)
+                if (allUnique(s, i, j)) ans = Math.max(ans, j - i);
+        return ans;
+    }
+
+    public boolean allUnique(String s, int start, int end) {
+        Set<Character> set = new HashSet<>();
+        for (int i = start; i < end; i++) {
+            Character ch = s.charAt(i);
+            if (set.contains(ch)) return false;
+            set.add(ch);
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return true;
     }
 }```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+    public int lengthOfLongestSubstring(String s) {
+        int n = s.length();
+        Set<Character> set = new HashSet<>();
+        int ans = 0, i = 0, j = 0;
+        while (i < n && j < n) {
+            // try to extend the range [i, j]
+            if (!set.contains(s.charAt(j))){
+                set.add(s.charAt(j++));
+                ans = Math.max(ans, j - i);
+            }
+            else {
+                set.remove(s.charAt(i++));
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return ans;
     }
 }```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+    public int lengthOfLongestSubstring(String s) {
+        int n = s.length(), ans = 0;
+        Map<Character, Integer> map = new HashMap<>(); // current index of character
+        // try to extend the range [i, j]
+        for (int j = 0, i = 0; j < n; j++) {
+            if (map.containsKey(s.charAt(j))) {
+                i = Math.max(map.get(s.charAt(j)), i);
             }
+            ans = Math.max(ans, j - i + 1);
+            map.put(s.charAt(j), j + 1);
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return ans;
     }
 }```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+    public int lengthOfLongestSubstring(String s) {
+        int n = s.length(), ans = 0;
+        int[] index = new int[128]; // current index of character
+        // try to extend the range [i, j]
+        for (int j = 0, i = 0; j < n; j++) {
+            i = Math.max(index[s.charAt(j)], i);
+            ans = Math.max(ans, j - i + 1);
+            index[s.charAt(j)] = j + 1;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return ans;
     }
 }```
 

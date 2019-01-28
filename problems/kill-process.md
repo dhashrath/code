@@ -1,85 +1,107 @@
 #### Kill Process
 
 ```java
+
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+    public List < Integer > killProcess(List < Integer > pid, List < Integer > ppid, int kill) {
+        List < Integer > l = new ArrayList < > ();
+        if (kill == 0)
+            return l;
+        l.add(kill);
+        for (int i = 0; i < ppid.size(); i++)
+            if (ppid.get(i) == kill)
+                l.addAll(killProcess(pid, ppid, pid.get(i)));
+        return l;
     }
-}```
+}
+```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+    class Node {
+        int val;
+        List < Node > children = new ArrayList < > ();
+    }
+    public List < Integer > killProcess(List < Integer > pid, List < Integer > ppid, int kill) {
+        HashMap < Integer, Node > map = new HashMap < > ();
+        for (int id: pid) {
+            Node node = new Node();
+            node.val = id;
+            map.put(id, node);
+        }
+        for (int i = 0; i < ppid.size(); i++) {
+            if (ppid.get(i) > 0) {
+                Node par = map.get(ppid.get(i));
+                par.children.add(map.get(pid.get(i)));
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        List < Integer > l = new ArrayList < > ();
+        l.add(kill);
+        getAllChildren(map.get(kill), l);
+        return l;
     }
-}```
+    public void getAllChildren(Node pn, List < Integer > l) {
+        for (Node n: pn.children) {
+            l.add(n.val);
+            getAllChildren(n, l);
+        }
+    }
+}
+```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+    public List < Integer > killProcess(List < Integer > pid, List < Integer > ppid, int kill) {
+        HashMap < Integer, List < Integer >> map = new HashMap < > ();
+        for (int i = 0; i < ppid.size(); i++) {
+            if (ppid.get(i) > 0) {
+                List < Integer > l = map.getOrDefault(ppid.get(i), new ArrayList < Integer > ());
+                l.add(pid.get(i));
+                map.put(ppid.get(i), l);
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        List < Integer > l = new ArrayList < > ();
+        l.add(kill);
+        getAllChildren(map, l, kill);
+        return l;
     }
-}```
+    public void getAllChildren(HashMap < Integer, List < Integer >> map, List < Integer > l, int kill) {
+        if (map.containsKey(kill))
+            for (int id: map.get(kill)) {
+                l.add(id);
+                getAllChildren(map, l, id);
+            }
+    }
+}
+```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+
+    public List < Integer > killProcess(List < Integer > pid, List < Integer > ppid, int kill) {
+        HashMap < Integer, List < Integer >> map = new HashMap < > ();
+        for (int i = 0; i < ppid.size(); i++) {
+            if (ppid.get(i) > 0) {
+                List < Integer > l = map.getOrDefault(ppid.get(i), new ArrayList < Integer > ());
+                l.add(pid.get(i));
+                map.put(ppid.get(i), l);
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        Queue < Integer > queue = new LinkedList < > ();
+        List < Integer > l = new ArrayList < > ();
+        queue.add(kill);
+        while (!queue.isEmpty()) {
+            int r = queue.remove();
+            l.add(r);
+            if (map.containsKey(r))
+                for (int id: map.get(r))
+                    queue.add(id);
+        }
+        return l;
     }
 }```
 

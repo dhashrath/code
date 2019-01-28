@@ -1,22 +1,51 @@
 #### Lemonade Change
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
+class Solution {
+    public boolean lemonadeChange(int[] bills) {
+        int five = 0, ten = 0;
+        for (int bill: bills) {
+            if (bill == 5)
+                five++;
+            else if (bill == 10) {
+                if (five == 0) return false;
+                five--;
+                ten++;
+            } else {
+                if (five > 0 && ten > 0) {
+                    five--;
+                    ten--;
+                } else if (five >= 3) {
+                    five -= 3;
+                } else {
+                    return false;
                 }
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        return true;
     }
 }```
+
+
+```python
+class Solution(object): #aw
+    def lemonadeChange(self, bills):
+        five = ten = 0
+        for bill in bills:
+            if bill == 5:
+                five += 1
+            elif bill == 10:
+                if not five: return False
+                five -= 1
+                ten += 1
+            else:
+                if ten and five:
+                    ten -= 1
+                    five -= 1
+                elif five >= 3:
+                    five -= 3
+                else:
+                    return False
+        return True```
 

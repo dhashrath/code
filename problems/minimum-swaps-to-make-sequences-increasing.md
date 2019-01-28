@@ -1,22 +1,42 @@
 #### Minimum Swaps To Make Sequences Increasing
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public int minSwap(int[] A, int[] B) {
+        // n: natural, s: swapped
+        int n1 = 0, s1 = 1;
+        for (int i = 1; i < A.length; ++i) {
+            int n2 = Integer.MAX_VALUE, s2 = Integer.MAX_VALUE;
+            if (A[i-1] < A[i] && B[i-1] < B[i]) {
+                n2 = Math.min(n2, n1);
+                s2 = Math.min(s2, s1 + 1);
             }
+            if (A[i-1] < B[i] && B[i-1] < A[i]) {
+                n2 = Math.min(n2, s1);
+                s2 = Math.min(s2, n1 + 1);
+            }
+            n1 = n2;
+            s1 = s2;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return Math.min(n1, s1);
     }
 }```
+
+
+```python
+class Solution(object):
+    def minSwap(self, A, B):
+        n1, s1 = 0, 1
+        for i in xrange(1, len(A)):
+            n2 = s2 = float("inf")
+            if A[i-1] < A[i] and B[i-1] < B[i]:
+                n2 = min(n2, n1)
+                s2 = min(s2, s1 + 1)
+            if A[i-1] < B[i] and B[i-1] < A[i]:
+                n2 = min(n2, s1)
+                s2 = min(s2, n1 + 1)
+
+            n1, s1 = n2, s2
+
+        return min(n1, s1)```
 

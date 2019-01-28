@@ -1,43 +1,48 @@
 #### Peak Index in a Mountain Array
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+class Solution {
+    public int peakIndexInMountainArray(int[] A) {
+        int i = 0;
+        while (A[i] < A[i+1]) i++;
+        return i;
     }
 }```
+
+
+```python
+class Solution(object):
+    def peakIndexInMountainArray(self, A):
+        for i in xrange(len(A)):
+            if A[i] > A[i+1]:
+                return i```
 
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+class Solution {
+    public int peakIndexInMountainArray(int[] A) {
+        int lo = 0, hi = A.length - 1;
+        while (lo < hi) {
+            int mi = lo + (hi - lo) / 2;
+            if (A[mi] < A[mi + 1])
+                lo = mi + 1;
+            else
+                hi = mi;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return lo;
     }
 }```
+
+
+```python
+class Solution(object):
+    def peakIndexInMountainArray(self, A):
+        lo, hi = 0, len(A) - 1
+        while lo < hi:
+            mi = (lo + hi) / 2
+            if A[mi] < A[mi + 1]:
+                lo = mi + 1
+            else:
+                hi = mi
+        return lo```
 

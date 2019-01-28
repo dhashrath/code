@@ -1,43 +1,56 @@
 #### Construct String from Binary Tree
 
 ```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+    public String tree2str(TreeNode t) {
+        if(t==null)
+            return "";
+        if(t.left==null && t.right==null)
+            return t.val+"";
+        if(t.right==null)
+            return t.val+"("+tree2str(t.left)+")";
+        return t.val+"("+tree2str(t.left)+")("+tree2str(t.right)+")";   
     }
-}```
+}
+```
 
 
 ```java
+
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+    public String tree2str(TreeNode t) {
+        if (t == null)
+            return "";
+        Stack < TreeNode > stack = new Stack < > ();
+        stack.push(t);
+        Set < TreeNode > visited = new HashSet < > ();
+        StringBuilder s = new StringBuilder();
+        while (!stack.isEmpty()) {
+            t = stack.peek();
+            if (visited.contains(t)) {
+                stack.pop();
+                s.append(")");
+            } else {
+                visited.add(t);
+                s.append("(" + t.val);
+                if (t.left == null && t.right != null)
+                    s.append("()");
+                if (t.right != null)
+                    stack.push(t.right);
+                if (t.left != null)
+                    stack.push(t.left);
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return s.substring(1, s.length() - 1);
     }
 }```
 

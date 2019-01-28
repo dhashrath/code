@@ -1,22 +1,64 @@
 #### Expressive Words
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public int expressiveWords(String S, String[] words) {
+        RLE R = new RLE(S);
+        int ans = 0;
+
+        search: for (String word: words) {
+            RLE R2 = new RLE(word);
+            if (!R.key.equals(R2.key)) continue;
+            for (int i = 0; i < R.counts.size(); ++i) {
+                int c1 = R.counts.get(i);
+                int c2 = R2.counts.get(i);
+                if (c1 < 3 && c1 != c2 || c1 < c2)
+                    continue search;
+            }
+            ans++;
+        }
+        return ans;
+    }
+}
+
+class RLE {
+    String key;
+    List<Integer> counts;
+
+    public RLE(String S) {
+        StringBuilder sb = new StringBuilder();
+        counts = new ArrayList();
+
+        char[] ca = S.toCharArray();
+        int N = ca.length;
+        int prev = -1;
+        for (int i = 0; i < N; ++i) {
+            if (i == N-1 || ca[i] != ca[i+1]) {
+                sb.append(ca[i]);
+                counts.add(i - prev);
+                prev = i;
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        key = sb.toString();
     }
 }```
+
+
+```python
+class Solution(object):
+    def expressiveWords(self, S, words):
+        def RLE(S):
+            return zip(*[(k, len(list(grp)))
+                         for k, grp in itertools.groupby(S)])
+
+        R, count = RLE(S)
+        ans = 0
+        for word in words:
+            R2, count2 = RLE(word)
+            if R2 != R: continue
+            ans += all(c1 >= max(c2, 3) or c1 == c2
+                       for c1, c2 in zip(count, count2))
+
+        return ans```
 

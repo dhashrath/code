@@ -2,42 +2,28 @@
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+    public int maxArea(int[] height) {
+        int maxarea = 0;
+        for (int i = 0; i < height.length; i++)
+            for (int j = i + 1; j < height.length; j++)
+                maxarea = Math.max(maxarea, Math.min(height[i], height[j]) * (j - i));
+        return maxarea;
     }
 }```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+    public int maxArea(int[] height) {
+        int maxarea = 0, l = 0, r = height.length - 1;
+        while (l < r) {
+            maxarea = Math.max(maxarea, Math.min(height[l], height[r]) * (r - l));
+            if (height[l] < height[r])
+                l++;
+            else
+                r--;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return maxarea;
     }
 }```
 

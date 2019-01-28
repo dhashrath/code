@@ -2,84 +2,71 @@
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+    public int subarraySum(int[] nums, int k) {
+        int count = 0;
+        for (int start = 0; start < nums.length; start++) {
+            for (int end = start + 1; end <= nums.length; end++) {
+                int sum = 0;
+                for (int i = start; i < end; i++)
+                    sum += nums[i];
+                if (sum == k)
+                    count++;
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return count;
     }
 }```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+    public int subarraySum(int[] nums, int k) {
+        int count = 0;
+        int[] sum = new int[nums.length + 1];
+        sum[0] = 0;
+        for (int i = 1; i <= nums.length; i++)
+            sum[i] = sum[i - 1] + nums[i - 1];
+        for (int start = 0; start < nums.length; start++) {
+            for (int end = start + 1; end <= nums.length; end++) {
+                if (sum[end] - sum[start] == k)
+                    count++;
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return count;
     }
 }```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+    public int subarraySum(int[] nums, int k) {
+        int count = 0;
+        for (int start = 0; start < nums.length; start++) {
+            int sum=0;
+            for (int end = start; end < nums.length; end++) {
+                sum+=nums[end];
+                if (sum == k)
+                    count++;
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return count;
     }
 }```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+    public int subarraySum(int[] nums, int k) {
+        int count = 0, sum = 0;
+        HashMap < Integer, Integer > map = new HashMap < > ();
+        map.put(0, 1);
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+            if (map.containsKey(sum - k))
+                count += map.get(sum - k);
+            map.put(sum, map.getOrDefault(sum, 0) + 1);
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return count;
     }
 }```
 

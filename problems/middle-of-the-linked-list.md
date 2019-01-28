@@ -1,43 +1,94 @@
 #### Middle of the Linked List
 
+```cpp
+class Solution {
+public:
+    ListNode* middleNode(ListNode* head) {
+        vector<ListNode*> A = {head};
+        while (A.back()->next != NULL)
+            A.push_back(A.back()->next);
+        return A[A.size() / 2];
+    }
+};```
+
+
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+class Solution {
+    public ListNode middleNode(ListNode head) {
+        ListNode[] A = new ListNode[100];
+        int t = 0;
+        while (head.next != null) {
+            A[t++] = head;
+            head = head.next;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return A[t / 2];
     }
 }```
 
 
-```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+```python
+class Solution(object):
+    def middleNode(self, head):
+        A = [head]
+        while A[-1].next:
+            A.append(A[-1].next)
+        return A[len(A) / 2]```
+
+
+```javascript
+var middleNode = function(head) {
+    let A = [head];
+    while (A[A.length - 1].next != null)
+        A.push(A[A.length - 1].next);
+    return A[Math.trunc(A.length / 2)];
+};```
+
+
+```cpp
+class Solution {
+public:
+    ListNode* middleNode(ListNode* head) {
+        ListNode* slow = head;
+        ListNode* fast = head;
+        while (fast != NULL && fast->next != NULL) {
+            slow = slow->next;
+            fast = fast->next->next;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return slow;
+    }
+};```
+
+
+```java
+class Solution {
+    public ListNode middleNode(ListNode head) {
+        ListNode slow = head, fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
     }
 }```
+
+
+```python
+class Solution(object):
+    def middleNode(self, head):
+        slow = fast = head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+        return slow```
+
+
+```javascript
+var middleNode = function(head) {
+    slow = fast = head;
+    while (fast && fast.next) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    return slow;
+};```
 

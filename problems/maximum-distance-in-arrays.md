@@ -2,63 +2,49 @@
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
+    public int maxDistance(int[][] list) {
+        int res = 0;
+        for (int i = 0; i < list.length - 1; i++) {
+            for (int j = 0; j < list[i].length; j++) {
+                for (int k = i + 1; k < list.length; k++) {
+                    for (int l = 0; l < list[k].length; l++) {
+                        res = Math.max(res, Math.abs(list[i][j] - list[k][l]));
+                    }
                 }
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return res;
     }
-}```
+}
+```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+    public int maxDistance(int[][] list) {
+        int res = 0;
+        for (int i = 0; i < list.length - 1; i++) {
+            for (int j = i + 1; j < list.length; j++) {
+                res = Math.max(res, Math.abs(list[i][0] - list[j][list[j].length - 1]));
+                res = Math.max(res, Math.abs(list[j][0] - list[i][list[i].length - 1]));
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return res;
     }
-}```
+}
+```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+    public int maxDistance(int[][] list) {
+        int res = 0, min_val = list[0][0], max_val = list[0][list[0].length - 1];
+        for (int i = 1; i < list.length; i++) {
+            res = Math.max(res, Math.max(Math.abs(list[i][list[i].length - 1] - min_val), Math.abs(max_val - list[i][0])));
+            min_val = Math.min(min_val, list[i][0]);
+            max_val = Math.max(max_val, list[i][list[i].length - 1]);
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return res;
     }
 }```
 

@@ -1,43 +1,94 @@
 #### Cracking the Safe
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    Set<String> seen;
+    StringBuilder ans;
+
+    public String crackSafe(int n, int k) {
+        if (n == 1 && k == 1) return "0";
+        seen = new HashSet();
+        ans = new StringBuilder();
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < n-1; ++i)
+            sb.append("0");
+        String start = sb.toString();
+
+        dfs(start, k);
+        ans.append(start);
+        return new String(ans);
+    }
+
+    public void dfs(String node, int k) {
+        for (int x = 0; x < k; ++x) {
+            String nei = node + x;
+            if (!seen.contains(nei)) {
+                seen.add(nei);
+                dfs(nei.substring(1), k);
+                ans.append(x);
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
     }
 }```
+
+
+```python
+class Solution(object):
+    def crackSafe(self, n, k):
+        seen = set()
+        ans = []
+        def dfs(node):
+            for x in map(str, range(k)):
+                nei = node + x
+                if nei not in seen:
+                    seen.add(nei)
+                    dfs(nei[1:])
+                    ans.append(x)
+
+        dfs("0" * (n-1))
+        return "".join(ans) + "0" * (n-1)```
 
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public String crackSafe(int n, int k) {
+        int M = (int) Math.pow(k, n-1);
+        int[] P = new int[M * k];
+        for (int i = 0; i < k; ++i)
+            for (int q = 0; q < M; ++q)
+                P[i*M + q] = q*k + i;
+
+        StringBuilder ans = new StringBuilder();
+        for (int i = 0; i < M*k; ++i) {
+            int j = i;
+            while (P[j] >= 0) {
+                ans.append(String.valueOf(j / M));
+                int v = P[j];
+                P[j] = -1;
+                j = v;
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        for (int i = 0; i < n-1; ++i)
+            ans.append("0");
+        return new String(ans);
     }
 }```
+
+
+```python
+class Solution(object):
+    def crackSafe(self, n, k):
+        M = k**(n-1)
+        P = [q*k+i for i in xrange(k) for q in xrange(M)]
+        ans = []
+
+        for i in xrange(k**n):
+            j = i
+            while P[j] >= 0:
+                ans.append(str(j / M))
+                P[j], j = -1, P[j]
+
+        return "".join(ans) + "0" * (n-1)```
 

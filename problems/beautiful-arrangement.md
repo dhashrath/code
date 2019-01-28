@@ -1,64 +1,90 @@
 #### Beautiful Arrangement
 
 ```java
+
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+    int count = 0;
+    public int countArrangement(int N) {
+        int[] nums = new int[N];
+        for (int i = 1; i <= N; i++)
+            nums[i - 1] = i;
+        permute(nums, 0);
+        return count;
+    }
+    public void permute(int[] nums, int l) {
+        if (l == nums.length - 1) {
+            int i;
+            for (i = 1; i <= nums.length; i++) {
+                if (nums[i - 1] % i != 0 && i % nums[i - 1] != 0)
+                    break;
+            }
+            if (i == nums.length + 1) {
+                count++;
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        for (int i = l; i < nums.length; i++) {
+            swap(nums, i, l);
+            permute(nums, l + 1);
+            swap(nums, i, l);
+        }
+    }
+    public void swap(int[] nums, int x, int y) {
+        int temp = nums[x];
+        nums[x] = nums[y];
+        nums[y] = temp;
+    }
+}
+```
+
+
+```java
+
+public class Solution {
+    int count = 0;
+    public int countArrangement(int N) {
+        int[] nums = new int[N];
+        for (int i = 1; i <= N; i++)
+            nums[i - 1] = i;
+        permute(nums, 0);
+        return count;
+    }
+    public void permute(int[] nums, int l) {
+        if (l == nums.length) {
+            count++;
+        }
+        for (int i = l; i < nums.length; i++) {
+            swap(nums, i, l);
+            if (nums[l] % (l + 1) == 0 || (l + 1) % nums[l] == 0)
+                permute(nums, l + 1);
+            swap(nums, i, l);
+        }
+    }
+    public void swap(int[] nums, int x, int y) {
+        int temp = nums[x];
+        nums[x] = nums[y];
+        nums[y] = temp;
     }
 }```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+    int count = 0;
+    public int countArrangement(int N) {
+        boolean[] visited = new boolean[N + 1];
+        calculate(N, 1, visited);
+        return count;
     }
-}```
-
-
-```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+    public void calculate(int N, int pos, boolean[] visited) {
+        if (pos > N)
+            count++;
+        for (int i = 1; i <= N; i++) {
+            if (!visited[i] && (pos % i == 0 || i % pos == 0)) {
+                visited[i] = true;
+                calculate(N, pos + 1, visited);
+                visited[i] = false;
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
     }
 }```
 

@@ -1,22 +1,17 @@
 #### Chalkboard XOR Game
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+class Solution {
+    public boolean xorGame(int[] nums) {
+      int x = 0;
+      for (int v : nums) x ^= v;
+      return x == 0 || nums.length % 2 == 0;
     }
 }```
+
+
+```python
+class Solution(object):
+    def xorGame(self, nums):
+        return reduce(operator.xor, nums) == 0 or len(nums) % 2 == 0```
 

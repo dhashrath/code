@@ -1,22 +1,33 @@
 #### Number of Lines To Write String
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public int[] numberOfLines(int[] widths, String S) {
+        int lines = 1, width = 0;
+        for (char c: S.toCharArray()) {
+            int w = widths[c - 'a'];
+            width += w;
+            if (width > 100) {
+                lines++;
+                width = w;
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        return new int[]{lines, width};
     }
 }```
+
+
+```python
+class Solution(object):
+    def numberOfLines(self, widths, S):
+        lines, width = 1, 0
+        for c in S:
+            w = widths[ord(c) - ord('a')]
+            width += w
+            if width > 100:
+                lines += 1
+                width = w
+
+        return lines, width```
 

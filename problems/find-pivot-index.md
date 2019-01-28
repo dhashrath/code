@@ -1,22 +1,27 @@
 #### Find Pivot Index
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+class Solution {
+    public int pivotIndex(int[] nums) {
+        int sum = 0, leftsum = 0;
+        for (int x: nums) sum += x;
+        for (int i = 0; i < nums.length; ++i) {
+            if (leftsum == sum - leftsum - nums[i]) return i;
+            leftsum += nums[i];
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return -1;
     }
 }```
+
+
+```python
+class Solution(object):
+    def pivotIndex(self, nums):
+        S = sum(nums)
+        leftsum = 0
+        for i, x in enumerate(nums):
+            if leftsum == (S - leftsum - x):
+                return i
+            leftsum += x
+        return -1```
 

@@ -1,22 +1,37 @@
 #### Reveal Cards In Increasing Order
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+class Solution {
+    public int[] deckRevealedIncreasing(int[] deck) {
+        int N = deck.length;
+        Deque<Integer> index = new LinkedList();
+        for (int i = 0; i < N; ++i)
+            index.add(i);
+
+        int[] ans = new int[N];
+        Arrays.sort(deck);
+        for (int card: deck) {
+            ans[index.pollFirst()] = card;
+            if (!index.isEmpty())
+                index.add(index.pollFirst());
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object):
+    def deckRevealedIncreasing(self, deck):
+        N = len(deck)
+        index = collections.deque(range(N))
+        ans = [None] * N
+
+        for card in sorted(deck):
+            ans[index.popleft()] = card
+            if index:
+                index.append(index.popleft())
+
+        return ans```
 

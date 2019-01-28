@@ -1,22 +1,82 @@
 #### Partition List
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public ListNode partition(ListNode head, int x) {
+
+        // before and after are the two pointers used to create the two list
+        // before_head and after_head are used to save the heads of the two lists.
+        // All of these are initialized with the dummy nodes created.
+        ListNode before_head = new ListNode(0);
+        ListNode before = before_head;
+        ListNode after_head = new ListNode(0);
+        ListNode after = after_head;
+
+        while (head != null) {
+
+            // If the original list node is lesser than the given x,
+            // assign it to the before list.
+            if (head.val < x) {
+                before.next = head;
+                before = before.next;
+            } else {
+                // If the original list node is greater or equal to the given x,
+                // assign it to the after list.
+                after.next = head;
+                after = after.next;
             }
+
+            // move ahead in the original list
+            head = head.next;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        // Last node of "after" list would also be ending node of the reformed list
+        after.next = null;
+
+        // Once all the nodes are correctly assigned to the two lists,
+        // combine them to form a single list which would be returned.
+        before.next = after_head.next;
+
+        return before_head.next;
     }
 }```
+
+
+```python
+class Solution(object):
+    def partition(self, head, x):
+        """
+        :type head: ListNode
+        :type x: int
+        :rtype: ListNode
+        """
+
+        # before and after are the two pointers used to create two list
+        # before_head and after_head are used to save the heads of the two lists.
+        # All of these are initialized with the dummy nodes created.
+        before = before_head = ListNode(0)
+        after = after_head = ListNode(0)
+
+        while head:
+            # If the original list node is lesser than the given x,
+            # assign it to the before list.
+            if head.val < x:
+                before.next = head
+                before = before.next
+            else:
+                # If the original list node is greater or equal to the given x,
+                # assign it to the after list.
+                after.next = head
+                after = after.next
+
+            # move ahead in the original list
+            head = head.next
+
+        # Last node of "after" list would also be ending node of the reformed list
+        after.next = None
+        # Once all the nodes are correctly assigned to the two lists,
+        # combine them to form a single list which would be returned.
+        before.next = after_head.next
+
+        return before_head.next```
 

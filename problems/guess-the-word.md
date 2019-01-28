@@ -1,22 +1,95 @@
 #### Guess the Word
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
+class Solution {
+    int[][] H;
+    public void findSecretWord(String[] wordlist, Master master) {
+        int N = wordlist.length;
+        H = new int[N][N];
+        for (int i = 0; i < N; ++i)
+            for (int j = i; j < N; ++j) {
+                int match = 0;
+                for (int k = 0; k < 6; ++k)
+                    if (wordlist[i].charAt(k) == wordlist[j].charAt(k))
+                        match++;
+                H[i][j] = H[j][i] = match;
+            }
+
+        List<Integer> possible = new ArrayList();
+        List<Integer> path = new ArrayList();
+        for (int i = 0; i < N; ++i) possible.add(i);
+
+        while (!possible.isEmpty()) {
+            int guess = solve(possible, path);
+            int matches = master.guess(wordlist[guess]);
+            if (matches == wordlist[0].length()) return;
+            List<Integer> possible2 = new ArrayList();
+            for (Integer j: possible) if (H[guess][j] == matches) possible2.add(j);
+            possible = possible2;
+            path.add(guess);
+        }
+
+    }
+
+    public int solve(List<Integer> possible, List<Integer> path) {
+        if (possible.size() <= 2) return possible.get(0);
+        List<Integer> ansgrp = possible;
+        int ansguess = -1;
+
+        for (int guess = 0; guess < H.length; ++guess) {
+            if (!path.contains(guess)) {
+                ArrayList<Integer>[] groups = new ArrayList[7];
+                for (int i = 0; i < 7; ++i) groups[i] = new ArrayList<Integer>();
+                for (Integer j: possible) if (j != guess) {
+                    groups[H[guess][j]].add(j);
+                }
+
+                ArrayList<Integer> maxgroup = groups[0];
+                for (int i = 0; i < 7; ++i)
+                    if (groups[i].size() > maxgroup.size())
+                        maxgroup = groups[i];
+
+                if (maxgroup.size() < ansgrp.size()) {
+                    ansgrp = maxgroup;
+                    ansguess = guess;
                 }
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        return ansguess;
     }
 }```
+
+
+```python
+
+class Solution(object):
+    def findSecretWord(self, wordlist, master):
+        N = len(wordlist)
+        self.H = [[sum(a==b for a,b in itertools.izip(wordlist[i], wordlist[j]))
+                   for j in xrange(N)] for i in xrange(N)]
+
+        possible, path = range(N), ()
+        while possible:
+            guess = self.solve(possible, path)
+            matches = master.guess(wordlist[guess])
+            if matches == len(wordlist[0]): return
+            possible = [j for j in possible if self.H[guess][j] == matches]
+            path = path + (guess,)
+
+    def solve(self, possible, path = ()):
+        if len(possible) <= 2: return possible[0]
+
+        ansgrp, ansguess = possible, None
+        for guess, row in enumerate(self.H):
+            if guess not in path:
+                groups = [[] for _ in xrange(7)]
+                for j in possible:
+                    if j != guess:
+                        groups[row[j]].append(j)
+                maxgroup = max(groups, key = len)
+                if len(maxgroup) < len(ansgrp):
+                    ansgrp, ansguess = maxgroup, guess
+
+        return ansguess```
 

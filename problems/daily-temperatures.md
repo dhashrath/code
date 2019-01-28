@@ -1,43 +1,65 @@
 #### Daily Temperatures
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public int[] dailyTemperatures(int[] T) {
+        int[] ans = new int[T.length];
+        int[] next = new int[101];
+        Arrays.fill(next, Integer.MAX_VALUE);
+        for (int i = T.length - 1; i >= 0; --i) {
+            int warmer_index = Integer.MAX_VALUE;
+            for (int t = T[i] + 1; t <= 100; ++t) {
+                if (next[t] < warmer_index)
+                    warmer_index = next[t];
             }
+            if (warmer_index < Integer.MAX_VALUE)
+                ans[i] = warmer_index - i;
+            next[T[i]] = i;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object):
+    def dailyTemperatures(self, T):
+        nxt = [float('inf')] * 102
+        ans = [0] * len(T)
+        for i in xrange(len(T) - 1, -1, -1):
+            #Use 102 so min(nxt[t]) has a default value
+            warmer_index = min(nxt[t] for t in xrange(T[i]+1, 102))
+            if warmer_index < float('inf'):
+                ans[i] = warmer_index - i
+            nxt[T[i]] = i
+        return ans```
 
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+class Solution {
+    public int[] dailyTemperatures(int[] T) {
+        int[] ans = new int[T.length];
+        Stack<Integer> stack = new Stack();
+        for (int i = T.length - 1; i >= 0; --i) {
+            while (!stack.isEmpty() && T[i] >= T[stack.peek()]) stack.pop();
+            ans[i] = stack.isEmpty() ? 0 : stack.peek() - i;
+            stack.push(i);
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object):
+    def dailyTemperatures(self, T):
+        ans = [0] * len(T)
+        stack = [] #indexes from hottest to coldest
+        for i in xrange(len(T) - 1, -1, -1):
+            while stack and T[i] >= T[stack[-1]]:
+                stack.pop()
+            if stack:
+                ans[i] = stack[-1] - i
+            stack.append(i)
+        return ans```
 

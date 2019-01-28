@@ -1,22 +1,50 @@
 #### Largest Number
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+class Solution {
+    private class LargerNumberComparator implements Comparator<String> {
+        @Override
+        public int compare(String a, String b) {
+            String order1 = a + b;
+            String order2 = b + a;
+           return order2.compareTo(order1);
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+    }
+
+    public String largestNumber(int[] nums) {
+        // Get input integers as strings.
+        String[] asStrs = new String[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            asStrs[i] = String.valueOf(nums[i]);
+        }
+
+        // Sort strings according to custom comparator.
+        Arrays.sort(asStrs, new LargerNumberComparator());
+
+        // If, after being sorted, the largest number is `0`, the entire number
+        // is zero.
+        if (asStrs[0].equals("0")) {
+            return "0";
+        }
+
+        // Build largest number from sorted array.
+        String largestNumberStr = new String();
+        for (String numAsStr : asStrs) {
+            largestNumberStr += numAsStr;
+        }
+
+        return largestNumberStr;
     }
 }```
+
+
+```python3
+class LargerNumKey(str):
+    def __lt__(x, y):
+        return x+y > y+x
+        
+class Solution:
+    def largestNumber(self, nums):
+        largest_num = ''.join(sorted(map(str, nums), key=LargerNumKey))
+        return '0' if largest_num[0] == '0' else largest_num```
 

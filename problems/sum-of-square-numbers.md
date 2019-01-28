@@ -2,105 +2,88 @@
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+    public boolean judgeSquareSum(int c) {
+        for (long a = 0; a * a <= c; a++) {
+            for (long b = 0; b * b <= c; b++) {
+                if (a * a + b * b == c)
+                    return true;
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return false;
     }
 }```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+    public boolean judgeSquareSum(int c) {
+        for (long a = 0; a * a <= c; a++) {
+            int b =  c - (int)(a * a);
+            int i = 1, sum = 0;
+            while (sum < b) {
+                sum += i;
+                i += 2;
             }
+            if (sum == b)
+                return true;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return false;
+    }
+}```
+
+
+```java
+
+public class Solution {
+    public boolean judgeSquareSum(int c) {
+        for (long a = 0; a * a <= c; a++) {
+            double b = Math.sqrt(c - a * a);
+            if (b == (int) b)
+                return true;
+        }
+        return false;
     }
 }```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+    public boolean judgeSquareSum(int c) {
+        for (long a = 0; a * a <= c; a++) {
+            int b = c - (int)(a * a);
+            if (binary_search(0, b, b))
+                return true;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return false;
+    }
+    public boolean binary_search(long s, long e, int n) {
+        if (s > e)
+            return false;
+        long mid = s + (e - s) / 2;
+        if (mid * mid == n)
+            return true;
+        if (mid * mid > n)
+            return binary_search(s, mid - 1, n);
+        return binary_search(mid + 1, e, n);
     }
 }```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
+    public boolean judgeSquareSum(int c) {
+        for (int i = 2; i * i <= c; i++) {
+            int count = 0;
+            if (c % i == 0) {
+                while (c % i == 0) {
+                    count++;
+                    c /= i;
                 }
+                if (i % 4 == 3 && count % 2 != 0)
+                    return false;
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
-    }
-}```
-
-
-```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return c % 4 != 3;
     }
 }```
 

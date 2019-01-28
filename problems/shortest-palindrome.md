@@ -1,64 +1,54 @@
 #### Shortest Palindrome
 
-```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+```cpp
+string shortestPalindrome(string s)
+{
+    int n = s.size();
+    string rev(s);
+    reverse(rev.begin(), rev.end());
+    int j = 0;
+    for (int i = 0; i < n; i++) {
+        if (s.substr(0, n - i) == rev.substr(i))
+            return rev.substr(0, i) + s;
     }
+    return "";
 }```
 
 
-```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+```cpp
+string shortestPalindrome(string s)
+{
+    int n = s.size();
+    int i = 0;
+    for (int j = n - 1; j >= 0; j--) {
+        if (s[i] == s[j])
+            i++;
     }
+    if (i == n)
+        return s;
+    string remain_rev = s.substr(i, n);
+    reverse(remain_rev.begin(), remain_rev.end());
+    return remain_rev + shortestPalindrome(s.substr(0, i)) + s.substr(i);
 }```
 
 
-```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+```cpp
+string shortestPalindrome(string s)
+{
+    int n = s.size();
+    string rev(s);
+    reverse(rev.begin(), rev.end());
+    string s_new = s + "#" + rev;
+    int n_new = s_new.size();
+    vector<int> f(n_new, 0);
+    for (int i = 1; i < n_new; i++) {
+        int t = f[i - 1];
+        while (t > 0 && s_new[i] != s_new[t])
+            t = f[t - 1];
+        if (s_new[i] == s_new[t])
+            ++t;
+        f[i] = t;
     }
+    return rev.substr(0, n - f[n_new - 1]) + s;
 }```
 

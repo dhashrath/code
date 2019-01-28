@@ -2,105 +2,82 @@
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+    public boolean canPermutePalindrome(String s) {
+        int count = 0;
+        for (char i = 0; i < 128 && count <= 1; i++) {
+            int ct = 0;
+            for (int j = 0; j < s.length(); j++) {
+                if (s.charAt(j) == i)
+                    ct++;
             }
+            count += ct % 2;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return count <= 1;
+    }
+}
+```
+
+
+```java
+public class Solution {
+ public boolean canPermutePalindrome(String s) {
+     HashMap < Character, Integer > map = new HashMap < > ();
+     for (int i = 0; i < s.length(); i++) {
+         map.put(s.charAt(i), map.getOrDefault(s.charAt(i), 0) + 1);
+     }
+     int count = 0;
+     for (char key: map.keySet()) {
+         count += map.get(key) % 2;
+     }
+     return count <= 1;
+ }
+}
+```
+
+
+```java
+public class Solution {
+    public boolean canPermutePalindrome(String s) {
+        int[] map = new int[128];
+        for (int i = 0; i < s.length(); i++) {
+            map[s.charAt(i)]++;
+        }
+        int count = 0;
+        for (int key = 0; key < map.length && count <= 1; key++) {
+            count += map[key] % 2;
+        }
+        return count <= 1;
     }
 }```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+    public boolean canPermutePalindrome(String s) {
+        int[] map = new int[128];
+        int count = 0;
+        for (int i = 0; i < s.length(); i++) {
+            map[s.charAt(i)]++;
+            if (map[s.charAt(i)] % 2 == 0)
+                count--;
+            else
+                count++;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return count <= 1;
     }
 }```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+    public boolean canPermutePalindrome(String s) {
+        Set < Character > set = new HashSet < > ();
+        for (int i = 0; i < s.length(); i++) {
+            if (!set.add(s.charAt(i)))
+                set.remove(s.charAt(i));
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return set.size() <= 1;
     }
-}```
-
-
-```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
-    }
-}```
-
-
-```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
-    }
-}```
+}
+```
 

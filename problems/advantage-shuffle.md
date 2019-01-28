@@ -1,22 +1,67 @@
 #### Advantage Shuffle
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public int[] advantageCount(int[] A, int[] B) {
+        int[] sortedA = A.clone();
+        Arrays.sort(sortedA);
+        int[] sortedB = B.clone();
+        Arrays.sort(sortedB);
+
+        // assigned[b] = list of a that are assigned to beat b
+        Map<Integer, Deque<Integer>> assigned = new HashMap();
+        for (int b: B) assigned.put(b, new LinkedList());
+
+        // remaining = list of a that are not assigned to any b
+        Deque<Integer> remaining = new LinkedList();
+
+        // populate (assigned, remaining) appropriately
+        // sortedB[j] is always the smallest unassigned element in B
+        int j = 0;
+        for (int a: sortedA) {
+            if (a > sortedB[j]) {
+                assigned.get(sortedB[j++]).add(a);
+            } else {
+                remaining.add(a);
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        // Reconstruct the answer from annotations (assigned, remaining)
+        int[] ans = new int[B.length];
+        for (int i = 0; i < B.length; ++i) {
+            // if there is some a assigned to b...
+            if (assigned.get(B[i]).size() > 0)
+                ans[i] = assigned.get(B[i]).pop();
+            else
+                ans[i] = remaining.pop();
+        }
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object):
+    def advantageCount(self, A, B):
+        sortedA = sorted(A)
+        sortedB = sorted(B)
+
+        # assigned[b] = list of a that are assigned to beat b
+        # remaining = list of a that are not assigned to any b
+        assigned = {b: [] for b in B}
+        remaining = []
+
+        # populate (assigned, remaining) appropriately
+        # sortedB[j] is always the smallest unassigned element in B
+        j = 0
+        for a in sortedA:
+            if a > sortedB[j]:
+                assigned[sortedB[j]].append(a)
+                j += 1
+            else:
+                remaining.append(a)
+
+        # Reconstruct the answer from annotations (assigned, remaining)
+        return [assigned[b].pop() if assigned[b] else remaining.pop()
+                for b in B]```
 

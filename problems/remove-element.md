@@ -1,43 +1,31 @@
 #### Remove Element
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+public int removeElement(int[] nums, int val) {
+    int i = 0;
+    for (int j = 0; j < nums.length; j++) {
+        if (nums[j] != val) {
+            nums[i] = nums[j];
+            i++;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
     }
+    return i;
 }```
 
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+public int removeElement(int[] nums, int val) {
+    int i = 0;
+    int n = nums.length;
+    while (i < n) {
+        if (nums[i] == val) {
+            nums[i] = nums[n - 1];
+            // reduce array size by one
+            n--;
+        } else {
+            i++;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
     }
+    return n;
 }```
 

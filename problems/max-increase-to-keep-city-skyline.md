@@ -1,22 +1,35 @@
 #### Max Increase to Keep City Skyline
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+class Solution {
+    public int maxIncreaseKeepingSkyline(int[][] grid) {
+        int N = grid.length;
+        int[] rowMaxes = new int[N];
+        int[] colMaxes = new int[N];
+
+        for (int r = 0; r < N; ++r)
+            for (int c = 0; c < N; ++c) {
+                rowMaxes[r] = Math.max(rowMaxes[r], grid[r][c]);
+                colMaxes[c] = Math.max(colMaxes[c], grid[r][c]);
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        int ans = 0;
+        for (int r = 0; r < N; ++r)
+            for (int c = 0; c < N; ++c)
+                ans += Math.min(rowMaxes[r], colMaxes[c]) - grid[r][c];
+
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object):
+    def maxIncreaseKeepingSkyline(self, grid):
+        row_maxes = [max(row) for row in grid]
+        col_maxes = [max(col) for col in zip(*grid)]
+
+        return sum(min(row_maxes[r], col_maxes[c]) - val
+                   for r, row in enumerate(grid)
+                   for c, val in enumerate(row))```
 

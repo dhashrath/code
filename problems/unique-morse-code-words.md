@@ -1,22 +1,36 @@
 #### Unique Morse Code Words
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+class Solution {
+    public int uniqueMorseRepresentations(String[] words) {
+        String[] MORSE = new String[]{".-","-...","-.-.","-..",".","..-.","--.",
+                         "....","..",".---","-.-",".-..","--","-.",
+                         "---",".--.","--.-",".-.","...","-","..-",
+                         "...-",".--","-..-","-.--","--.."};
+
+        Set<String> seen = new HashSet();
+        for (String word: words) {
+            StringBuilder code = new StringBuilder();
+            for (char c: word.toCharArray())
+                code.append(MORSE[c - 'a']);
+            seen.add(code.toString());
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        return seen.size();
     }
 }```
+
+
+```python
+class Solution(object):
+    def uniqueMorseRepresentations(self, words):
+        MORSE = [".-","-...","-.-.","-..",".","..-.","--.",
+                 "....","..",".---","-.-",".-..","--","-.",
+                 "---",".--.","--.-",".-.","...","-","..-",
+                 "...-",".--","-..-","-.--","--.."]
+
+        seen = {"".join(MORSE[ord(c) - ord('a')] for c in word)
+                for word in words}
+
+        return len(seen)```
 

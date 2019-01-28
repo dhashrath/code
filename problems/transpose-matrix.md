@@ -1,22 +1,29 @@
 #### Transpose Matrix
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public int[][] transpose(int[][] A) {
+        int R = A.length, C = A[0].length;
+        int[][] ans = new int[C][R];
+        for (int r = 0; r < R; ++r)
+            for (int c = 0; c < C; ++c) {
+                ans[c][r] = A[r][c];
             }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object):
+    def transpose(self, A):
+        R, C = len(A), len(A[0])
+        ans = [[None] * R for _ in xrange(C)]
+        for r, row in enumerate(A):
+            for c, val in enumerate(row):
+                ans[c][r] = val
+        return ans
+
+        #Alternative Solution:
+        #return zip(*A)```
 

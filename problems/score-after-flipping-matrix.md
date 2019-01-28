@@ -1,43 +1,94 @@
 #### Score After Flipping Matrix
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
+class Solution {
+    public int matrixScore(int[][] A) {
+        int R = A.length, C = A[0].length;
+        int[] colsums = new int[C];
+        for (int r = 0; r < R; ++r)
+            for (int c = 0; c < C; ++c)
+                colsums[c] += A[r][c];
+
+        int ans = 0;
+        for (int state = 0; state < (1<<R); ++state) {
+            // Toggle the rows so that after, 'state' represents
+            // the toggled rows.
+            if (state > 0) {
+                int trans = state ^ (state-1);
+                for (int r = 0; r < R; ++r) {
+                    if (((trans >> r) & 1) > 0) {
+                        for (int c = 0; c < C; ++c) {
+                            colsums[c] += A[r][c] == 1 ? -1 : 1;
+                            A[r][c] ^= 1;
+                        }
+                    }
                 }
             }
+
+            // Calculate the score with the rows toggled by 'state'
+            int score = 0;
+            for (int c = 0; c < C; ++c)
+                score += Math.max(colsums[c], R - colsums[c]) * (1 << (C-1-c));
+            ans = Math.max(ans, score);
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object):
+    def matrixScore(self, A):
+        R, C = len(A), len(A[0])
+
+        colsums = [0] * C
+        for r in xrange(R):
+            for c in xrange(C):
+                colsums[c] += A[r][c]
+
+        ans = 0
+        for r in xrange(1<<R):
+            if r:
+                trans = r ^ (r-1)
+                for bit in xrange(R):
+                    if (trans >> bit) & 1:
+                        for c in xrange(C):
+                            colsums[c] += -1 if A[bit][c] else +1
+                            A[bit][c] ^= 1
+            
+            score = sum(max(x, R - x) * (1 << (C-1-c))
+                        for c, x in enumerate(colsums))
+            ans = max(ans, score)
+
+        return ans```
 
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+class Solution {
+    public int matrixScore(int[][] A) {
+        int R = A.length, C = A[0].length;
+        int ans = 0;
+        for (int c = 0; c < C; ++c) {
+            int col = 0;
+            for (int r = 0; r < R; ++r)
+                col += A[r][c] ^ A[r][0];
+            ans += Math.max(col, R - col) * (1 << (C-1-c));
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object):
+    def matrixScore(self, A):
+        R, C = len(A), len(A[0])
+        ans = 0
+        for c in xrange(C):
+            col = 0
+            for r in xrange(R):
+                col += A[r][c] ^ A[r][0]
+            ans += max(col, R - col) * 2 ** (C - 1 - c)
+        return ans```
 

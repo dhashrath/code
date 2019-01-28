@@ -1,22 +1,40 @@
 #### Find And Replace in String
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public String findReplaceString(String S, int[] indexes, String[] sources, String[] targets) {
+        int N = S.length();
+        int[] match = new int[N];
+        Arrays.fill(match, -1);
+
+        for (int i = 0; i < indexes.length; ++i) {
+            int ix = indexes[i];
+            if (S.substring(ix, ix + sources[i].length()).equals(sources[i]))
+                match[ix] = i;
+        }
+
+        StringBuilder ans = new StringBuilder();
+        int ix = 0;
+        while (ix < N) {
+            if (match[ix] >= 0) {
+                ans.append(targets[match[ix]]);
+                ix += sources[match[ix]].length();
+            } else {
+                ans.append(S.charAt(ix++));
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return ans.toString();
     }
 }```
+
+
+```python
+class Solution(object):
+    def findReplaceString(self, S, indexes, sources, targets):
+        S = list(S)
+        for i, x, y in sorted(zip(indexes, sources, targets), reverse = True):
+            if all(i+k < len(S) and S[i+k] == x[k] for k in xrange(len(x))):
+                S[i:i+len(x)] = list(y)
+
+        return "".join(S)```
 

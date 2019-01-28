@@ -1,43 +1,62 @@
 #### Maximum Length of Pair Chain
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public int findLongestChain(int[][] pairs) {
+        Arrays.sort(pairs, (a, b) -> a[0] - b[0]);
+        int N = pairs.length;
+        int[] dp = new int[N];
+        Arrays.fill(dp, 1);
+
+        for (int j = 1; j < N; ++j) {
+            for (int i = 0; i < j; ++i) {
+                if (pairs[i][1] < pairs[j][0])
+                    dp[j] = Math.max(dp[j], dp[i] + 1);
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        int ans = 0;
+        for (int x: dp) if (x > ans) ans = x;
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object): #Time Limit Exceeded
+    def findLongestChain(self, pairs):
+        pairs.sort()
+        dp = [1] * len(pairs)
+
+        for j in xrange(len(pairs)):
+            for i in xrange(j):
+                if pairs[i][1] < pairs[j][0]:
+                    dp[j] = max(dp[j], dp[i] + 1)
+
+        return max(dp)```
 
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+class Solution {
+    public int findLongestChain(int[][] pairs) {
+        Arrays.sort(pairs, (a, b) -> a[1] - b[1]);
+        int cur = Integer.MIN_VALUE, ans = 0;
+        for (int[] pair: pairs) if (cur < pair[0]) {
+            cur = pair[1];
+            ans++;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object):
+    def findLongestChain(self, pairs):
+        cur, ans = float('-inf'), 0
+        for x, y in sorted(pairs, key = operator.itemgetter(1)):
+            if cur < x:
+                cur = y
+                ans += 1
+        return ans```
 

@@ -1,22 +1,51 @@
 #### Partition Array into Disjoint Intervals
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+class Solution {
+    public int partitionDisjoint(int[] A) {
+        int N = A.length;
+        int[] maxleft = new int[N];
+        int[] minright = new int[N];
+
+        int m = A[0];
+        for (int i = 0; i < N; ++i) {
+            m = Math.max(m, A[i]);
+            maxleft[i] = m;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        m = A[N-1];
+        for (int i = N-1; i >= 0; --i) {
+            m = Math.min(m, A[i]);
+            minright[i] = m;
+        }
+
+        for (int i = 1; i < N; ++i)
+            if (maxleft[i-1] <= minright[i])
+                return i;
+
+        throw null;
     }
 }```
+
+
+```python
+class Solution(object):
+    def partitionDisjoint(self, A):
+        N = len(A)
+        maxleft = [None] * N
+        minright = [None] * N
+
+        m = A[0]
+        for i in xrange(N):
+            m = max(m, A[i])
+            maxleft[i] = m
+
+        m = A[-1]
+        for i in xrange(N-1, -1, -1):
+            m = min(m, A[i])
+            minright[i] = m
+
+        for i in xrange(1, N):
+            if maxleft[i-1] <= minright[i]:
+                return i```
 

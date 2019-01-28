@@ -1,43 +1,70 @@
 #### Binary Tree Postorder Traversal
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
-    }
+/* Definition for a binary tree node. */
+public class TreeNode {
+  int val;
+  TreeNode left;
+  TreeNode right;
+
+  TreeNode(int x) {
+    val = x;
+  }
 }```
+
+
+```python
+class TreeNode(object):
+    """ Definition of a binary tree node."""
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None```
 
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+class Solution {
+  public List<Integer> postorderTraversal(TreeNode root) {
+    LinkedList<TreeNode> stack = new LinkedList<>();
+    LinkedList<Integer> output = new LinkedList<>();
+    if (root == null) {
+      return output;
     }
+
+    stack.add(root);
+    while (!stack.isEmpty()) {
+      TreeNode node = stack.pollLast();
+      output.addFirst(node.val);
+      if (node.left != null) {
+        stack.add(node.left);
+      }
+      if (node.right != null) {
+        stack.add(node.right);
+      }
+    }
+    return output;
+  }
 }```
+
+
+```python
+class Solution(object):
+    def postorderTraversal(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[int]
+        """
+        if root is None:
+            return []
+
+        stack, output = [root, ], []
+        while stack:
+            root = stack.pop()
+            output.append(root.val)
+            if root.left is not None:
+                stack.append(root.left)
+            if root.right is not None:
+                stack.append(root.right)
+                
+        return output[::-1]```
 

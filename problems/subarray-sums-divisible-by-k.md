@@ -1,22 +1,32 @@
 #### Subarray Sums Divisible by K
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+class Solution {
+    public int subarraysDivByK(int[] A, int K) {
+        int N = A.length;
+        int[] P = new int[N+1];
+        for (int i = 0; i < N; ++i)
+            P[i+1] = P[i] + A[i];
+
+        int[] count = new int[K];
+        for (int x: P)
+            count[(x % K + K) % K]++;
+
+        int ans = 0;
+        for (int v: count)
+            ans += v * (v - 1) / 2;
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object):
+    def subarraysDivByK(self, A, K):
+        P = [0]
+        for x in A:
+            P.append((P[-1] + x) % K)
+
+        count = collections.Counter(P)
+        return sum(v*(v-1)/2 for v in count.values())```
 

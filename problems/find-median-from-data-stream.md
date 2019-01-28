@@ -1,106 +1,157 @@
 #### Find Median from Data Stream
 
-```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+```cpp
+class MedianFinder {
+    vector<double> store;
+
+public:
+    // Adds a number into the data structure.
+    void addNum(int num)
+    {
+        store.push_back(num);
     }
-}```
 
+    // Returns the median of current data stream
+    double findMedian()
+    {
+        sort(store.begin(), store.end());
 
-```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        int n = store.size();
+        return (n & 1 ? (store[n / 2 - 1] + store[n / 2]) * 0.5 : store[n / 2]);
     }
-}```
+};```
 
 
-```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+```cpp
+class MedianFinder {
+    vector<int> store; // resize-able container
+
+public:
+    // Adds a number into the data structure.
+    void addNum(int num)
+    {
+        if (store.empty())
+            store.push_back(num);
+        else
+            store.insert(lower_bound(store.begin(), store.end(), num), num);     // binary search and insertion combined
     }
-}```
 
-
-```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+    // Returns the median of current data stream
+    double findMedian()
+    {
+        int n = store.size();
+        return n & 1 ? store[n / 2] : (store[n / 2 - 1] + store[n / 2]) * 0.5;
     }
-}```
+};```
 
 
-```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+```cpp
+class MedianFinder {
+    priority_queue<int> lo;                              // max heap
+    priority_queue<int, vector<int>, greater<int>> hi;   // min heap
+
+public:
+    // Adds a number into the data structure.
+    void addNum(int num)
+    {
+        lo.push(num);                                    // Add to max heap
+
+        hi.push(lo.top());                               // balancing step
+        lo.pop();
+
+        if (lo.size() < hi.size()) {                     // maintain size property
+            lo.push(hi.top());
+            hi.pop();
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
     }
-}```
+
+    // Returns the median of current data stream
+    double findMedian()
+    {
+        return lo.size() > hi.size() ? (double) lo.top() : (lo.top() + hi.top()) * 0.5;
+    }
+};```
+
+
+```cpp
+class MedianFinder {
+    multiset<int> data;
+    multiset<int>::iterator lo_median, hi_median;
+
+public:
+    MedianFinder()
+        : lo_median(data.end())
+        , hi_median(data.end())
+    {
+    }
+
+    void addNum(int num)
+    {
+        const size_t n = data.size();   // store previous size
+
+        data.insert(num);               // insert into multiset
+
+        if (!n) {
+            // no elements before, one element now
+            lo_median = hi_median = data.begin();
+        }
+        else if (n & 1) {
+            // odd size before (i.e. lo == hi), even size now (i.e. hi = lo + 1)
+
+            if (num < *lo_median)       // num < lo
+                lo_median--;
+            else                        // num >= hi
+                hi_median++;            // insertion at end of equal range
+        }
+        else {
+            // even size before (i.e. hi = lo + 1), odd size now (i.e. lo == hi)
+
+            if (num > *lo_median && num < *hi_median) {
+                lo_median++;                    // num in between lo and hi
+                hi_median--;
+            }
+            else if (num >= *hi_median)         // num inserted after hi
+                lo_median++;
+            else                                // num <= lo < hi
+                lo_median = --hi_median;        // insertion at end of equal range spoils lo
+        }
+    }
+
+    double findMedian()
+    {
+        return (*lo_median + *hi_median) * 0.5;
+    }
+};```
+
+
+```cpp
+class MedianFinder {
+    multiset<int> data;
+    multiset<int>::iterator mid;
+
+public:
+    MedianFinder()
+        : mid(data.end())
+    {
+    }
+
+    void addNum(int num)
+    {
+        const int n = data.size();
+        data.insert(num);
+
+        if (!n)                                 // first element inserted
+            mid = data.begin();
+        else if (num < *mid)                    // median is decreased
+            mid = (n & 1 ? mid : prev(mid));
+        else                                    // median is increased
+            mid = (n & 1 ? next(mid) : mid);
+    }
+
+    double findMedian()
+    {
+        const int n = data.size();
+        return (*mid + *next(mid, n % 2 - 1)) * 0.5;
+    }
+};```
 

@@ -1,22 +1,53 @@
 #### Numbers With Same Consecutive Differences
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public int[] numsSameConsecDiff(int N, int K) {
+        Set<Integer> cur = new HashSet();
+        for (int i = 1; i <= 9; ++i)
+            cur.add(i);
+
+        for (int steps = 1; steps <= N-1; ++steps) {
+            Set<Integer> cur2 = new HashSet();
+            for (int x: cur) {
+                int d = x % 10;
+                if (d-K >= 0)
+                    cur2.add(10*x + (d-K));
+                if (d+K <= 9)
+                    cur2.add(10*x + (d+K));
             }
+
+            cur = cur2;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        if (N == 1)
+            cur.add(0);
+
+        int[] ans = new int[cur.size()];
+        int t = 0;
+        for (int x: cur)
+            ans[t++] = x;
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object):
+    def numsSameConsecDiff(self, N, K):
+        ans = {x for x in range(1, 10)}
+        for _ in xrange(N-1):
+            ans2 = set()
+            for x in ans:
+                d = x % 10
+                if d - K >= 0:
+                    ans2.add(10*x + d-K)
+                if d + K <= 9:
+                    ans2.add(10*x + d+K)
+            ans = ans2
+
+        if N == 1:
+            ans.add(0)
+
+        return list(ans)```
 

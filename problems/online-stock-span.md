@@ -1,22 +1,37 @@
 #### Online Stock Span
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+class StockSpanner {
+    Stack<Integer> prices, weights;
+
+    public StockSpanner() {
+        prices = new Stack();
+        weights = new Stack();
+    }
+
+    public int next(int price) {
+        int w = 1;
+        while (!prices.isEmpty() && prices.peek() <= price) {
+            prices.pop();
+            w += weights.pop();
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        prices.push(price);
+        weights.push(w);
+        return w;
     }
 }```
+
+
+```python
+class StockSpanner(object):
+    def __init__(self):
+        self.stack = []
+
+    def next(self, price):
+        weight = 1
+        while self.stack and self.stack[-1][0] <= price:
+            weight += self.stack.pop()[1]
+        self.stack.append((price, weight))
+        return weight```
 

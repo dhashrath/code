@@ -1,43 +1,94 @@
 #### Unique Binary Search Trees II
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
-    }
+// Definition for a binary tree node.
+public class TreeNode {
+  int val;
+  TreeNode left;
+  TreeNode right;
+
+  TreeNode(int x) {
+    val = x;
+  }
 }```
+
+
+```python
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None```
 
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+class Solution {
+  public LinkedList<TreeNode> generate_trees(int start, int end) {
+    LinkedList<TreeNode> all_trees = new LinkedList<TreeNode>();
+    if (start > end) {
+      all_trees.add(null);
+      return all_trees;
     }
+
+    // pick up a root
+    for (int i = start; i <= end; i++) {
+      // all possible left subtrees if i is choosen to be a root
+      LinkedList<TreeNode> left_trees = generate_trees(start, i - 1);
+
+      // all possible right subtrees if i is choosen to be a root
+      LinkedList<TreeNode> right_trees = generate_trees(i + 1, end);
+
+      // connect left and right trees to the root i
+      for (TreeNode l : left_trees) {
+        for (TreeNode r : right_trees) {
+          TreeNode current_tree = new TreeNode(i);
+          current_tree.left = l;
+          current_tree.right = r;
+          all_trees.add(current_tree);
+        }
+      }
+    }
+    return all_trees;
+  }
+
+  public List<TreeNode> generateTrees(int n) {
+    if (n == 0) {
+      return new LinkedList<TreeNode>();
+    }
+    return generate_trees(1, n);
+  }
 }```
+
+
+```python
+class Solution:
+    def generateTrees(self, n):
+        """
+        :type n: int
+        :rtype: List[TreeNode]
+        """
+        def generate_trees(start, end):
+            if start > end:
+                return [None,]
+            
+            all_trees = []
+            for i in range(start, end + 1):  # pick up a root
+                # all possible left subtrees if i is choosen to be a root
+                left_trees = generate_trees(start, i - 1)
+                
+                # all possible right subtrees if i is choosen to be a root
+                right_trees = generate_trees(i + 1, end)
+                
+                # connect left and right subtrees to the root i
+                for l in left_trees:
+                    for r in right_trees:
+                        current_tree = TreeNode(i)
+                        current_tree.left = l
+                        current_tree.right = r
+                        all_trees.append(current_tree)
+            
+            return all_trees
+        
+        return generate_trees(1, n) if n else []```
 

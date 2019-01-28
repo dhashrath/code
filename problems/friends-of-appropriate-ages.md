@@ -1,22 +1,44 @@
 #### Friends Of Appropriate Ages
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public int numFriendRequests(int[] ages) {
+        int[] count = new int[121];
+        for (int age: ages) count[age]++;
+
+        int ans = 0;
+        for (int ageA = 0; ageA <= 120; ageA++) {
+            int countA = count[ageA];
+            for (int ageB = 0; ageB <= 120; ageB++) {
+                int countB = count[ageB];
+                if (ageA * 0.5 + 7 >= ageB) continue;
+                if (ageA < ageB) continue;
+                if (ageA < 100 && 100 < ageB) continue;
+                ans += countA * countB;
+                if (ageA == ageB) ans -= countA;
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object):
+    def numFriendRequests(self, ages):
+        count = [0] * 121
+        for age in ages:
+            count[age] += 1
+
+        ans = 0
+        for ageA, countA in enumerate(count):
+            for ageB, countB in enumerate(count):
+                if ageA * 0.5 + 7 >= ageB: continue
+                if ageA < ageB: continue
+                if ageA < 100 < ageB: continue
+                ans += countA * countB
+                if ageA == ageB: ans -= countA
+
+        return ans```
 

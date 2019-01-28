@@ -1,22 +1,71 @@
 #### Sum of Distances in Tree
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+class Solution {
+    int[] ans, count;
+    List<Set<Integer>> graph;
+    int N;
+    public int[] sumOfDistancesInTree(int N, int[][] edges) {
+        this.N = N;
+        graph = new ArrayList<Set<Integer>>();
+        ans = new int[N];
+        count = new int[N];
+        Arrays.fill(count, 1);
+
+        for (int i = 0; i < N; ++i)
+            graph.add(new HashSet<Integer>());
+        for (int[] edge: edges) {
+            graph.get(edge[0]).add(edge[1]);
+            graph.get(edge[1]).add(edge[0]);
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        dfs(0, -1);
+        dfs2(0, -1);
+        return ans;
+    }
+
+    public void dfs(int node, int parent) {
+        for (int child: graph.get(node))
+            if (child != parent) {
+                dfs(child, node);
+                count[node] += count[child];
+                ans[node] += ans[child] + count[child];
+            }
+    }
+
+    public void dfs2(int node, int parent) {
+        for (int child: graph.get(node))
+            if (child != parent) {
+                ans[child] = ans[node] - count[child] + N - count[child];
+                dfs2(child, node);
+            }
     }
 }```
+
+
+```python
+class Solution(object):
+    def sumOfDistancesInTree(self, N, edges):
+        graph = collections.defaultdict(set)
+        for u, v in edges:
+            graph[u].add(v)
+            graph[v].add(u)
+
+        count = [1] * N
+        ans = [0] * N
+        def dfs(node = 0, parent = None):
+            for child in graph[node]:
+                if child != parent:
+                    dfs(child, node)
+                    count[node] += count[child]
+                    ans[node] += ans[child] + count[child]
+
+        def dfs2(node = 0, parent = None):
+            for child in graph[node]:
+                if child != parent:
+                    ans[child] = ans[node] - count[child] + N - count[child]
+                    dfs2(child, node)
+
+        dfs()
+        dfs2()
+        return ans```
 

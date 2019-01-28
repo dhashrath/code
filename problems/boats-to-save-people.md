@@ -1,22 +1,54 @@
 #### Boats to Save People
 
-```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+```cpp
+class Solution {
+public:
+    int numRescueBoats(vector<int>& people, int limit) {
+        sort(people.begin(), people.end());
+        int i = 0, j = people.size() - 1;
+        int ans = 0;
+
+        while (i <= j) {
+            ans++;
+            if (people[i] + people[j] <= limit)
+                i++;
+            j--;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        return ans;
+    }
+};```
+
+
+```java
+class Solution {
+    public int numRescueBoats(int[] people, int limit) {
+        Arrays.sort(people);
+        int i = 0, j = people.length - 1;
+        int ans = 0;
+
+        while (i <= j) {
+            ans++;
+            if (people[i] + people[j] <= limit)
+                i++;
+            j--;
+        }
+
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object):
+    def numRescueBoats(self, people, limit):
+        people.sort()
+        i, j = 0, len(people) - 1
+        ans = 0
+        while i <= j:
+            ans += 1
+            if people[i] + people[j] <= limit:
+                i += 1
+            j -= 1
+        return ans```
 

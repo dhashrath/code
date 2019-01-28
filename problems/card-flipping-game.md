@@ -1,22 +1,35 @@
 #### Card Flipping Game
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+class Solution {
+    public int flipgame(int[] fronts, int[] backs) {
+        Set<Integer> same = new HashSet();
+        for (int i = 0; i < fronts.length; ++i)
+            if (fronts[i] == backs[i])
+                same.add(fronts[i]);
+
+        int ans = 9999;
+        for (int x: fronts)
+            if (!same.contains(x))
+                ans = Math.min(ans, x);
+
+        for (int x: backs)
+            if (!same.contains(x))
+                ans = Math.min(ans, x);
+
+        return ans % 9999;
     }
 }```
+
+
+```python
+class Solution(object):
+    def flipgame(self, fronts, backs):
+        same = {x for i, x in enumerate(fronts) if x == backs[i]}
+        ans = 9999
+        for x in itertools.chain(fronts, backs):
+            if x not in same:
+                ans = min(ans, x)
+
+        return ans % 9999```
 

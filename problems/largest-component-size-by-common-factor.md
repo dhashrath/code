@@ -1,22 +1,119 @@
 #### Largest Component Size by Common Factor
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
+class Solution {
+    public int largestComponentSize(int[] A) {
+        int N = A.length;
+
+        // factored[i] = a list of unique prime factors of A[i]
+        ArrayList<Integer>[] factored = new ArrayList[N];
+        for (int i = 0; i < N; ++i) {
+            factored[i] = new ArrayList<Integer>();
+            int d = 2, x = A[i];
+            while (d * d <= x) {
+                if (x % d == 0) {
+                    while (x % d == 0)
+                        x /= d;
+                    factored[i].add(d);
                 }
+
+                d++;
             }
+
+            if (x > 1 || factored[i].isEmpty())
+                factored[i].add(x);
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        // primesL : a list of all primes that occur in factored
+        Set<Integer> primes = new HashSet();
+        for (List<Integer> facs: factored)
+            for (int x: facs)
+                primes.add(x);
+
+        int[] primesL = new int[primes.size()];
+        int t = 0;
+        for (int x: primes)
+            primesL[t++] = x;
+
+        // primeToIndex.get(v) == i  iff  primes[i] = v
+        Map<Integer, Integer> primeToIndex = new HashMap();
+        for (int i = 0; i < primesL.length; ++i)
+            primeToIndex.put(primesL[i], i);
+
+        DSU dsu = new DSU(primesL.length);
+        for (List<Integer> facs: factored)
+            for (int x: facs)
+                dsu.union(primeToIndex.get(facs.get(0)), primeToIndex.get(x));
+
+        int[] count = new int[primesL.length];
+        for (List<Integer> facs: factored)
+            count[dsu.find(primeToIndex.get(facs.get(0)))]++;
+
+        int ans = 0;
+        for (int x: count)
+            if (x > ans)
+                ans = x;
+        return ans;
+    }
+}
+
+class DSU {
+    int[] parent;
+    public DSU(int N) {
+        parent = new int[N];
+        for (int i = 0; i < N; ++i)
+            parent[i] = i;
+    }
+    public int find(int x) {
+        if (parent[x] != x) parent[x] = find(parent[x]);
+        return parent[x];
+    }
+    public void union(int x, int y) {
+        parent[find(x)] = find(y);
     }
 }```
+
+
+```python
+class DSU:
+    def __init__(self, N):
+        self.p = range(N)
+
+    def find(self, x):
+        if self.p[x] != x:
+            self.p[x] = self.find(self.p[x])
+        return self.p[x]
+
+    def union(self, x, y):
+        xr = self.find(x)
+        yr = self.find(y)
+        self.p[xr] = yr
+
+class Solution(object):
+    def largestComponentSize(self, A):
+        B = []
+        for x in A:
+            facs = []
+            d = 2
+            while d * d <= x:
+                if x % d == 0:
+                    while x % d == 0:
+                        x /= d
+                    facs.append(d)
+                d += 1
+
+            if x > 1 or not facs:
+                facs.append(x)
+            B.append(facs)
+
+        primes = list({p for facs in B for p in facs})
+        prime_to_index = {p: i for i, p in enumerate(primes)}
+
+        dsu = DSU(len(primes))
+        for facs in B:
+            for x in facs:
+                dsu.union(prime_to_index[facs[0]], prime_to_index[x])
+
+        count = collections.Counter(dsu.find(prime_to_index[facs[0]]) for facs in B)
+        return max(count.values())```
 

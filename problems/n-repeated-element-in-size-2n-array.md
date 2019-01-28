@@ -1,43 +1,49 @@
 #### N-Repeated Element in Size 2N Array
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+class Solution {
+    public int repeatedNTimes(int[] A) {
+        Map<Integer, Integer> count = new HashMap();
+        for (int x: A) {
+            count.put(x, count.getOrDefault(x, 0) + 1);
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        for (int k: count.keySet())
+            if (count.get(k) > 1)
+                return k;
+
+        throw null;
     }
 }```
+
+
+```python
+class Solution(object):
+    def repeatedNTimes(self, A):
+        count = collections.Counter(A)
+        for k in count:
+            if count[k] > 1:
+                return k```
 
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+class Solution {
+    public int repeatedNTimes(int[] A) {
+        for (int k = 1; k <= 3; ++k)
+            for (int i = 0; i < A.length - k; ++i)
+                if (A[i] == A[i+k])
+                    return A[i];
+
+        throw null;
     }
 }```
+
+
+```python
+class Solution(object):
+    def repeatedNTimes(self, A):
+        for k in xrange(1, 4):
+            for i in xrange(len(A) - k):
+                if A[i] == A[i+k]:
+                    return A[i]```
 

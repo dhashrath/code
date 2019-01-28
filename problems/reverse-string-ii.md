@@ -1,22 +1,27 @@
 #### Reverse String II
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public String reverseStr(String s, int k) {
+        char[] a = s.toCharArray();
+        for (int start = 0; start < a.length; start += 2 * k) {
+            int i = start, j = Math.min(start + k - 1, a.length - 1);
+            while (i < j) {
+                char tmp = a[i];
+                a[i++] = a[j];
+                a[j--] = tmp;
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return new String(a);
     }
 }```
+
+
+```python
+class Solution(object):
+    def reverseStr(self, s, k):
+        a = list(s)
+        for i in xrange(0, len(a), 2*k):
+            a[i:i+k] = reversed(a[i:i+k])
+        return "".join(a)```
 

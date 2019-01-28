@@ -1,22 +1,31 @@
 #### Largest Triangle Area
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+class Solution {
+    public double largestTriangleArea(int[][] points) {
+        int N = points.length;
+        double ans = 0;
+        for (int i = 0; i < N; ++i)
+            for (int j = i+1; j < N; ++j)
+                for (int k = j+1; k < N; ++k)
+                    ans = Math.max(ans, area(points[i], points[j], points[k]));
+        return ans;
+    }
+
+    public double area(int[] P, int[] Q, int[] R) {
+        return 0.5 * Math.abs(P[0]*Q[1] + Q[0]*R[1] + R[0]*P[1]
+                             -P[1]*Q[0] - Q[1]*R[0] - R[1]*P[0]);
     }
 }```
+
+
+```python
+class Solution(object):
+    def largestTriangleArea(self, points):
+        def area(p, q, r):
+            return .5 * abs(p[0]*q[1]+q[0]*r[1]+r[0]*p[1]
+                           -p[1]*q[0]-q[1]*r[0]-r[1]*p[0])
+
+        return max(area(*triangle)
+            for triangle in itertools.combinations(points, 3))```
 

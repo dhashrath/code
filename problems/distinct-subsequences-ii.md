@@ -1,22 +1,42 @@
 #### Distinct Subsequences II
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+class Solution {
+    public int distinctSubseqII(String S) {
+        int MOD = 1_000_000_007;
+        int N = S.length();
+        int[] dp = new int[N+1];
+        dp[0] = 1;
+
+        int[] last = new int[26];
+        Arrays.fill(last, -1);
+
+        for (int i = 0; i < N; ++i) {
+            int x = S.charAt(i) - 'a';
+            dp[i+1] = dp[i] * 2 % MOD;
+            if (last[x] >= 0)
+                dp[i+1] -= dp[last[x]];
+            dp[i+1] %= MOD;
+            last[x] = i;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        dp[N]--;
+        if (dp[N] < 0) dp[N] += MOD;
+        return dp[N];
     }
 }```
+
+
+```python
+class Solution(object):
+    def distinctSubseqII(self, S):
+        dp = [1]
+        last = {}
+        for i, x in enumerate(S):
+            dp.append(dp[-1] * 2)
+            if x in last:
+                dp[-1] -= dp[last[x]]
+            last[x] = i
+
+        return (dp[-1] - 1) % (10**9 + 7)```
 

@@ -1,22 +1,38 @@
 #### Subdomain Visit Count
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public List<String> subdomainVisits(String[] cpdomains) {
+        Map<String, Integer> counts = new HashMap();
+        for (String domain: cpdomains) {
+            String[] cpinfo = domain.split("\\s+");
+            String[] frags = cpinfo[1].split("\\.");
+            int count = Integer.valueOf(cpinfo[0]);
+            String cur = "";
+            for (int i = frags.length - 1; i >= 0; --i) {
+                cur = frags[i] + (i < frags.length - 1 ? "." : "") + cur;
+                counts.put(cur, counts.getOrDefault(cur, 0) + count);
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        List<String> ans = new ArrayList();
+        for (String dom: counts.keySet())
+            ans.add("" + counts.get(dom) + " " + dom);
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object):
+    def subdomainVisits(self, cpdomains):
+        ans = collections.Counter()
+        for domain in cpdomains:
+            count, domain = domain.split()
+            count = int(count)
+            frags = domain.split('.')
+            for i in xrange(len(frags)):
+                ans[".".join(frags[i:])] += count
+
+        return ["{} {}".format(ct, dom) for dom, ct in ans.items()]```
 

@@ -1,22 +1,25 @@
 #### Reach a Number
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+class Solution {
+    public int reachNumber(int target) {
+        target = Math.abs(target);
+        int k = 0;
+        while (target > 0)
+            target -= ++k;
+        return target % 2 == 0 ? k : k + 1 + k%2;
     }
 }```
+
+
+```python
+class Solution(object):
+    def reachNumber(self, target):
+        target = abs(target)
+        k = 0
+        while target > 0:
+            k += 1
+            target -= k
+
+        return k if target % 2 == 0 else k + 1 + k%2```
 

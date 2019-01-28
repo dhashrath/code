@@ -1,22 +1,44 @@
 #### Bag of Tokens
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public int bagOfTokensScore(int[] tokens, int P) {
+        Arrays.sort(tokens);
+        int lo = 0, hi = tokens.length - 1;
+        int points = 0, ans = 0;
+        while (lo <= hi && (P >= tokens[lo] || points > 0)) {
+            while (lo <= hi && P >= tokens[lo]) {
+                P -= tokens[lo++];
+                points++;
+            }
+
+            ans = Math.max(ans, points);
+            if (lo <= hi && points > 0) {
+                P += tokens[hi--];
+                points--;
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object):
+    def bagOfTokensScore(self, tokens, P):
+        tokens.sort()
+        deque = collections.deque(tokens)
+        ans = bns = 0
+        while deque and (P >= deque[0] or bns):
+            while deque and P >= deque[0]:
+                P -= deque.popleft()
+                bns += 1
+            ans = max(ans, bns)
+
+            if deque and bns:
+                P += deque.pop()
+                bns -= 1
+
+        return ans```
 

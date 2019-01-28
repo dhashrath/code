@@ -1,22 +1,42 @@
 #### Pancake Sorting
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+class Solution {
+    public List<Integer> pancakeSort(int[] A) {
+        List<Integer> ans = new ArrayList();
+        int N = A.length;
+
+        Integer[] B = new Integer[N];
+        for (int i = 0; i < N; ++i)
+            B[i] = i+1;
+        Arrays.sort(B, (i, j) -> A[j-1] - A[i-1]);
+
+        for (int i: B) {
+            for (int f: ans)
+                if (i <= f)
+                    i = f+1 - i;
+            ans.add(i);
+            ans.add(N--);
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object):
+    def pancakeSort(self, A):
+        ans = []
+
+        N = len(A)
+        B = sorted(range(1, N+1), key = lambda i: -A[i-1])
+        for i in B:
+            for f in ans:
+                if i <= f:
+                    i = f+1 - i
+            ans.extend([i, N])
+            N -= 1
+
+        return ans```
 

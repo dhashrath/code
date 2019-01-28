@@ -1,22 +1,44 @@
 #### Check Completeness of a Binary Tree
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public boolean isCompleteTree(TreeNode root) {
+        List<ANode> nodes = new ArrayList();
+        nodes.add(new ANode(root, 1));
+        int i = 0;
+        while (i < nodes.size()) {
+            ANode anode = nodes.get(i++);
+            if (anode.node != null) {
+                nodes.add(new ANode(anode.node.left, anode.code * 2));
+                nodes.add(new ANode(anode.node.right, anode.code * 2 + 1));
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        return nodes.get(i-1).code == nodes.size();
+    }
+}
+
+class ANode {  // Annotated Node
+    TreeNode node;
+    int code;
+    ANode(TreeNode node, int code) {
+        this.node = node;
+        this.code = code;
     }
 }```
+
+
+```python
+class Solution(object):
+    def isCompleteTree(self, root):
+        nodes = [(root, 1)]
+        i = 0
+        while i < len(nodes):
+            node, v = nodes[i]
+            i += 1
+            if node:
+                nodes.append((node.left, 2*v))
+                nodes.append((node.right, 2*v+1))
+
+        return  nodes[-1][1] == len(nodes)```
 

@@ -1,22 +1,24 @@
 #### Longest Continuous Increasing Subsequence
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+class Solution {
+    public int findLengthOfLCIS(int[] nums) {
+        int ans = 0, anchor = 0;
+        for (int i = 0; i < nums.length; ++i) {
+            if (i > 0 && nums[i-1] >= nums[i]) anchor = i;
+            ans = Math.max(ans, i - anchor + 1);
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object):
+    def findLengthOfLCIS(self, nums):
+        ans = anchor = 0
+        for i in range(len(nums)):
+            if i and nums[i-1] >= nums[i]: anchor = i
+            ans = max(ans, i - anchor + 1)
+        return ans```
 

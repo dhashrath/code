@@ -1,22 +1,44 @@
 #### Goat Latin
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public String toGoatLatin(String S) {
+        Set<Character> vowel = new HashSet();
+        for (char c: new char[]{'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'})
+            vowel.add(c);
+
+        int t = 1;
+        StringBuilder ans = new StringBuilder();
+        for (String word: S.split(" ")) {
+            char first = word.charAt(0);
+            if (vowel.contains(first)) {
+                ans.append(word);
+            } else {
+                ans.append(word.substring(1));
+                ans.append(word.substring(0, 1));
             }
+            ans.append("ma");
+            for (int i = 0; i < t; i++)
+                ans.append("a");
+            t++;
+            ans.append(" ");
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        ans.deleteCharAt(ans.length() - 1);
+        return ans.toString();
     }
 }```
+
+
+```python
+class Solution(object):
+    def toGoatLatin(self, S):
+
+        def convert(word):
+            if word[0] not in 'aeiouAEIOU':
+                word = word[1:] + word[:1]
+            return word + 'ma'
+
+        return " ".join(convert(word) + 'a' * i
+                        for i, word in enumerate(S.split(), 1))```
 

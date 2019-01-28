@@ -1,22 +1,63 @@
 #### 24 Game
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
+class Solution {
+    public boolean judgePoint24(int[] nums) {
+        ArrayList A = new ArrayList<Double>();
+        for (int v: nums) A.add((double) v);
+        return solve(A);
+    }
+    private boolean solve(ArrayList<Double> nums) {
+        if (nums.size() == 0) return false;
+        if (nums.size() == 1) return Math.abs(nums.get(0) - 24) < 1e-6;
+
+        for (int i = 0; i < nums.size(); i++) {
+            for (int j = 0; j < nums.size(); j++) {
+                if (i != j) {
+                    ArrayList<Double> nums2 = new ArrayList<Double>();
+                    for (int k = 0; k < nums.size(); k++) if (k != i && k != j) {
+                        nums2.add(nums.get(k));
+                    }
+                    for (int k = 0; k < 4; k++) {
+                        if (k < 2 && j > i) continue;
+                        if (k == 0) nums2.add(nums.get(i) + nums.get(j));
+                        if (k == 1) nums2.add(nums.get(i) * nums.get(j));
+                        if (k == 2) nums2.add(nums.get(i) - nums.get(j));
+                        if (k == 3) {
+                            if (nums.get(j) != 0) {
+                                nums2.add(nums.get(i) / nums.get(j));
+                            } else {
+                                continue;
+                            }
+                        }
+                        if (solve(nums2)) return true;
+                        nums2.remove(nums2.size() - 1);
+                    }
                 }
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return false;
     }
 }```
+
+
+```python
+from operator import truediv, mul, add, sub
+
+class Solution(object):
+    def judgePoint24(self, A):
+        if not A: return False
+        if len(A) == 1: return abs(A[0] - 24) < 1e-6
+
+        for i in xrange(len(A)):
+            for j in xrange(len(A)):
+                if i != j:
+                    B = [A[k] for k in xrange(len(A)) if i != k != j]
+                    for op in (truediv, mul, add, sub):
+                        if (op is add or op is mul) and j > i: continue
+                        if op is not truediv or A[j]:
+                            B.append(op(A[i], A[j]))
+                            if self.judgePoint24(B): return True
+                            B.pop()
+        return False```
 

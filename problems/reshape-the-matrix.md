@@ -1,64 +1,67 @@
 #### Reshape the Matrix
 
 ```java
+
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+    public int[][] matrixReshape(int[][] nums, int r, int c) {
+        int[][] res = new int[r][c];
+        if (nums.length == 0 || r * c != nums.length * nums[0].length)
+            return nums;
+        int count = 0;
+        Queue < Integer > queue = new LinkedList < > ();
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = 0; j < nums[0].length; j++) {
+                queue.add(nums[i][j]);
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                res[i][j] = queue.remove();
+            }
+        }
+        return res;
     }
-}```
+}
+```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
+    public int[][] matrixReshape(int[][] nums, int r, int c) {
+        int[][] res = new int[r][c];
+        if (nums.length == 0 || r * c != nums.length * nums[0].length)
+            return nums;
+        int rows = 0, cols = 0;
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = 0; j < nums[0].length; j++) {
+                res[rows][cols] = nums[i][j];
+                cols++;
+                if (cols == c) {
+                    rows++;
+                    cols = 0;
                 }
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return res;
     }
-}```
+}
+```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+    public int[][] matrixReshape(int[][] nums, int r, int c) {
+        int[][] res = new int[r][c];
+        if (nums.length == 0 || r * c != nums.length * nums[0].length)
+            return nums;
+        int count = 0;
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = 0; j < nums[0].length; j++) {
+                res[count / c][count % c] = nums[i][j];
+                count++;
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return res;
     }
 }```
 

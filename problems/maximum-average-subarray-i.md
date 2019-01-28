@@ -2,42 +2,33 @@
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
-    }
+	public double findMaxAverage(int[] nums, int k) {
+		int[] sum = new int[nums.length];
+		sum[0] = nums[0];
+		for (int i = 1; i < nums.length; i++)
+		sum[i] = sum[i - 1] + nums[i];
+		double res = sum[k - 1] * 1.0 / k;
+		for (int i = k; i < nums.length; i++) {
+			res = Math.max(res, (sum[i] - sum[i - k]) * 1.0 / k);
+		}
+		return res;
+	}
 }```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+    public double findMaxAverage(int[] nums, int k) {
+        double sum=0;
+        for(int i=0;i<k;i++)
+            sum+=nums[i];
+        double res=sum;
+        for(int i=k;i<nums.length;i++){
+            sum+=nums[i]-nums[i-k];
+                res=Math.max(res,sum);
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return res/k;
     }
-}```
+}
+```
 

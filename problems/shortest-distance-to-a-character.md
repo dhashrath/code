@@ -1,22 +1,41 @@
 #### Shortest Distance to a Character
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+class Solution {
+    public int[] shortestToChar(String S, char C) {
+        int N = S.length();
+        int[] ans = new int[N];
+        int prev = Integer.MIN_VALUE / 2;
+
+        for (int i = 0; i < N; ++i) {
+            if (S.charAt(i) == C) prev = i;
+            ans[i] = i - prev;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        prev = Integer.MAX_VALUE / 2;
+        for (int i = N-1; i >= 0; --i) {
+            if (S.charAt(i) == C) prev = i;
+            ans[i] = Math.min(ans[i], prev - i);
+        }
+
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object):
+    def shortestToChar(self, S, C):
+        prev = float('-inf')
+        ans = []
+        for i, x in enumerate(S):
+            if x == C: prev = i
+            ans.append(i - prev)
+
+        prev = float('inf')
+        for i in xrange(len(S) - 1, -1, -1):
+            if S[i] == C: prev = i
+            ans[i] = min(ans[i], prev - i)
+
+        return ans```
 

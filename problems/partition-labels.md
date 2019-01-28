@@ -1,22 +1,37 @@
 #### Partition Labels
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public List<Integer> partitionLabels(String S) {
+        int[] last = new int[26];
+        for (int i = 0; i < S.length(); ++i)
+            last[S.charAt(i) - 'a'] = i;
+        
+        int j = 0, anchor = 0;
+        List<Integer> ans = new ArrayList();
+        for (int i = 0; i < S.length(); ++i) {
+            j = Math.max(j, last[S.charAt(i) - 'a']);
+            if (i == j) {
+                ans.add(i - anchor + 1);
+                anchor = i + 1;
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object):
+    def partitionLabels(self, S):
+        last = {c: i for i, c in enumerate(S)}
+        j = anchor = 0
+        ans = []
+        for i, c in enumerate(S):
+            j = max(j, last[c])
+            if i == j:
+                ans.append(i - anchor + 1)
+                anchor = i + 1
+            
+        return ans```
 

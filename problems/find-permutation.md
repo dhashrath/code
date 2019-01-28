@@ -1,64 +1,76 @@
 #### Find Permutation
 
 ```java
+
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+    public int[] findPermutation(String s) {
+        int[] res = new int[s.length() + 1];
+        Stack < Integer > stack = new Stack < > ();
+        int j = 0;
+        for (int i = 1; i <= s.length(); i++) {
+            if (s.charAt(i - 1) == 'I') {
+                stack.push(i);
+                while (!stack.isEmpty())
+                    res[j++] = stack.pop();
+            } else
+                stack.push(i);
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        stack.push(s.length() + 1);
+        while (!stack.isEmpty())
+            res[j++] = stack.pop();
+        return res;
     }
 }```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+    public int[] findPermutation(String s) {
+        int[] res = new int[s.length() + 1];
+        for (int i = 0; i < res.length; i++)
+            res[i] = i + 1;
+        int i = 1;
+        while (i <= s.length()) {
+            int j = i;
+            while (i <= s.length() && s.charAt(i - 1) == 'D')
+                i++;
+            reverse(res, j - 1, i);
+            i++;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return res;
     }
-}```
+    public void reverse(int[] a, int start, int end) {
+        for (int i = 0; i < (end - start) / 2; i++) {
+            int temp = a[i + start];
+            a[i + start] = a[end - i - 1];
+            a[end - i - 1] = temp;
+        }
+    }
+}
+```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
+    public int[] findPermutation(String s) {
+        int[] res = new int[s.length() + 1];
+        res[0]=1;
+        int i = 1;
+        while (i <= s.length()) {
+            res[i]=i+1;
+            int j = i;
+            if(s.charAt(i-1)=='D')
+            {
+                while (i <= s.length() && s.charAt(i - 1) == 'D')
+                    i++;
+                for (int k = j - 1, c = i; k <= i - 1; k++, c--) {
+                    res[k] = c;
                 }
             }
+            else
+                i++;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return res;
     }
 }```
 

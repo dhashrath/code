@@ -1,22 +1,35 @@
 #### Minimum Falling Path Sum
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public int minFallingPathSum(int[][] A) {
+        int N = A.length;
+        for (int r = N-2; r >= 0; --r) {
+            for (int c = 0; c < N; ++c) {
+                // best = min(A[r+1][c-1], A[r+1][c], A[r+1][c+1])
+                int best = A[r+1][c];
+                if (c > 0)
+                    best = Math.min(best, A[r+1][c-1]);
+                if (c+1 < N)
+                    best = Math.min(best, A[r+1][c+1]);
+                A[r][c] += best;
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        int ans = Integer.MAX_VALUE;
+        for (int x: A[0])
+            ans = Math.min(ans, x);
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object):
+    def minFallingPathSum(self, A):
+        while len(A) >= 2:
+            row = A.pop()            
+            for i in xrange(len(row)):
+                A[-1][i] += min(row[max(0,i-1): min(len(row), i+2)])
+        return min(A[0])```
 

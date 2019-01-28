@@ -1,43 +1,66 @@
 #### N-ary Tree Preorder Traversal
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
-    }
-}```
+// Definition for a Node.
+class Node {
+  public int val;
+  public List<Node> children;
+
+  public Node() {}
+
+  public Node(int _val,List<Node> _children) {
+    val = _val;
+    children = _children;
+  }
+};```
+
+
+```python
+# Definition for a Node.
+class Node(object):
+    def __init__(self, val, children):
+        self.val = val
+        self.children = children```
 
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+class Solution {
+  public List<Integer> preorder(Node root) {
+    LinkedList<Node> stack = new LinkedList<>();
+    LinkedList<Integer> output = new LinkedList<>();
+    if (root == null) {
+      return output;
     }
+
+    stack.add(root);
+    while (!stack.isEmpty()) {
+      Node node = stack.pollLast();
+      output.add(node.val);
+      Collections.reverse(node.children);
+      for (Node item : node.children) {
+        stack.add(item);
+      }
+    }
+    return output;
+  }
 }```
+
+
+```python
+class Solution(object):
+    def preorder(self, root):
+        """
+        :type root: Node
+        :rtype: List[int]
+        """
+        if root is None:
+            return []
+        
+        stack, output = [root, ], []            
+        while stack:
+            root = stack.pop()
+            output.append(root.val)
+            stack.extend(root.children[::-1])
+                
+        return output```
 

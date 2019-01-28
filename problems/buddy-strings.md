@@ -1,22 +1,53 @@
 #### Buddy Strings
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
+class Solution {
+    public boolean buddyStrings(String A, String B) {
+        if (A.length() != B.length()) return false;
+        if (A.equals(B)) {
+            int[] count = new int[26];
+            for (int i = 0; i < A.length(); ++i)
+                count[A.charAt(i) - 'a']++;
+
+            for (int c: count)
+                if (c > 1) return true;
+            return false;
+        } else {
+            int first = -1, second = -1;
+            for (int i = 0; i < A.length(); ++i) {
+                if (A.charAt(i) != B.charAt(i)) {
+                    if (first == -1)
+                        first = i;
+                    else if (second == -1)
+                        second = i;
+                    else
+                        return false;
                 }
             }
+
+            return (second != -1 && A.charAt(first) == B.charAt(second) &&
+                    A.charAt(second) == B.charAt(first));
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
     }
 }```
+
+
+```python
+class Solution(object):
+    def buddyStrings(self, A, B):
+        if len(A) != len(B): return False
+        if A == B:
+            seen = set()
+            for a in A:
+                if a in seen:
+                    return True
+                seen.add(a)
+            return False
+        else:
+            pairs = []
+            for a, b in itertools.izip(A, B):
+                if a != b:
+                    pairs.append((a, b))
+                if len(pairs) >= 3: return False
+            return len(pairs) == 2 and pairs[0] == pairs[1][::-1]```
 

@@ -1,22 +1,30 @@
 #### Binary Tree Tilt
 
 ```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+    int tilt=0;
+    public int findTilt(TreeNode root) {
+        traverse(root);
+        return tilt;
+    }
+    public int traverse(TreeNode root)
+    {
+        if(root==null )
+            return 0;
+        int left=traverse(root.left);
+        int right=traverse(root.right);
+        tilt+=Math.abs(left-right);
+        return left+right+root.val;
     }
 }```
 

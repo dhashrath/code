@@ -1,22 +1,37 @@
 #### Delete Columns to Make Sorted III
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public int minDeletionSize(String[] A) {
+        int W = A[0].length();
+        int[] dp = new int[W];
+        Arrays.fill(dp, 1);
+        for (int i = W-2; i >= 0; --i)
+            search: for (int j = i+1; j < W; ++j) {
+                for (String row: A)
+                    if (row.charAt(i) > row.charAt(j))
+                        continue search;
+
+                dp[i] = Math.max(dp[i], 1 + dp[j]);
             }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        int kept = 0;
+        for (int x: dp)
+            kept = Math.max(kept, x);
+        return W - kept;
     }
 }```
+
+
+```python
+class Solution(object):
+    def minDeletionSize(self, A):
+        W = len(A[0])
+        dp = [1] * W
+        for i in xrange(W-2, -1, -1):
+            for j in xrange(i+1, W):
+                if all(row[i] <= row[j] for row in A):
+                    dp[i] = max(dp[i], 1 + dp[j])
+
+        return W - max(dp)```
 

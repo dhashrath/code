@@ -1,22 +1,46 @@
 #### Asteroid Collision
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
+class Solution {
+    public int[] asteroidCollision(int[] asteroids) {
+        Stack<Integer> stack = new Stack();
+        for (int ast: asteroids) {
+            collision: {
+                while (!stack.isEmpty() && ast < 0 && 0 < stack.peek()) {
+                    if (stack.peek() < -ast) {
+                        stack.pop();
+                        continue;
+                    } else if (stack.peek() == -ast) {
+                        stack.pop();
+                    }
+                    break collision;
                 }
+                stack.push(ast);
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        int[] ans = new int[stack.size()];
+        for (int t = ans.length - 1; t >= 0; --t) {
+            ans[t] = stack.pop();
+        }
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object):
+    def asteroidCollision(self, asteroids):
+        ans = []
+        for new in asteroids:
+            while ans and new < 0 < ans[-1]:
+                if ans[-1] < -new:
+                    ans.pop()
+                    continue
+                elif ans[-1] == -new:
+                    ans.pop()
+                break
+            else:
+                ans.append(new)
+        return ans```
 

@@ -1,85 +1,118 @@
 #### Sort Array By Parity
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+class Solution {
+    public int[] sortArrayByParity(int[] A) {
+        Integer[] B = new Integer[A.length];
+        for (int t = 0; t < A.length; ++t)
+            B[t] = A[t];
+
+        Arrays.sort(B, (a, b) -> Integer.compare(a%2, b%2));
+
+        for (int t = 0; t < A.length; ++t)
+            A[t] = B[t];
+        return A;
+
+        /* Alternative:
+        return Arrays.stream(A)
+                     .boxed()
+                     .sorted((a, b) -> Integer.compare(a%2, b%2))
+                     .mapToInt(i -> i)
+                     .toArray();
+        */
     }
 }```
+
+
+```python
+class Solution(object):
+    def sortArrayByParity(self, A):
+        A.sort(key = lambda x: x % 2)
+        return A```
 
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+class Solution {
+    public int[] sortArrayByParity(int[] A) {
+        int[] ans = new int[A.length];
+        int t = 0;
+
+        for (int i = 0; i < A.length; ++i)
+            if (A[i] % 2 == 0)
+                ans[t++] = A[i];
+
+        for (int i = 0; i < A.length; ++i)
+            if (A[i] % 2 == 1)
+                ans[t++] = A[i];
+
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object):
+    def sortArrayByParity(self, A):
+        return ([x for x in A if x % 2 == 0] +
+                [x for x in A if x % 2 == 1])```
 
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+class Solution {
+    public int[] sortArrayByParity(int[] A) {
+        int[] ans = new int[A.length];
+        int t = 0;
+
+        for (int i = 0; i < A.length; ++i)
+            if (A[i] % 2 == 0)
+                ans[t++] = A[i];
+
+        for (int i = 0; i < A.length; ++i)
+            if (A[i] % 2 == 1)
+                ans[t++] = A[i];
+
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object):
+    def sortArrayByParity(self, A):
+        return ([x for x in A if x % 2 == 0] +
+                [x for x in A if x % 2 == 1])```
 
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public int[] sortArrayByParity(int[] A) {
+        int i = 0, j = A.length - 1;
+        while (i < j) {
+            if (A[i] % 2 > A[j] % 2) {
+                int tmp = A[i];
+                A[i] = A[j];
+                A[j] = tmp;
             }
+
+            if (A[i] % 2 == 0) i++;
+            if (A[j] % 2 == 1) j--;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        return A;
     }
 }```
+
+
+```python
+class Solution(object):
+    def sortArrayByParity(self, A):
+        i, j = 0, len(A) - 1
+        while i < j:
+            if A[i] % 2 > A[j] % 2:
+                A[i], A[j] = A[j], A[i]
+
+            if A[i] % 2 == 0: i += 1
+            if A[j] % 2 == 1: j -= 1
+
+        return A```
 

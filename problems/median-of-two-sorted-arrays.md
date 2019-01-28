@@ -1,22 +1,75 @@
 #### Median of Two Sorted Arrays
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public double findMedianSortedArrays(int[] A, int[] B) {
+        int m = A.length;
+        int n = B.length;
+        if (m > n) { // to ensure m<=n
+            int[] temp = A; A = B; B = temp;
+            int tmp = m; m = n; n = tmp;
+        }
+        int iMin = 0, iMax = m, halfLen = (m + n + 1) / 2;
+        while (iMin <= iMax) {
+            int i = (iMin + iMax) / 2;
+            int j = halfLen - i;
+            if (i < iMax && B[j-1] > A[i]){
+                iMin = i + 1; // i is too small
+            }
+            else if (i > iMin && A[i-1] > B[j]) {
+                iMax = i - 1; // i is too big
+            }
+            else { // i is perfect
+                int maxLeft = 0;
+                if (i == 0) { maxLeft = B[j-1]; }
+                else if (j == 0) { maxLeft = A[i-1]; }
+                else { maxLeft = Math.max(A[i-1], B[j-1]); }
+                if ( (m + n) % 2 == 1 ) { return maxLeft; }
+
+                int minRight = 0;
+                if (i == m) { minRight = B[j]; }
+                else if (j == n) { minRight = A[i]; }
+                else { minRight = Math.min(B[j], A[i]); }
+
+                return (maxLeft + minRight) / 2.0;
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return 0.0;
     }
 }```
+
+
+```python
+def median(A, B):
+    m, n = len(A), len(B)
+    if m > n:
+        A, B, m, n = B, A, n, m
+    if n == 0:
+        raise ValueError
+
+    imin, imax, half_len = 0, m, (m + n + 1) / 2
+    while imin <= imax:
+        i = (imin + imax) / 2
+        j = half_len - i
+        if i < m and B[j-1] > A[i]:
+            # i is too small, must increase it
+            imin = i + 1
+        elif i > 0 and A[i-1] > B[j]:
+            # i is too big, must decrease it
+            imax = i - 1
+        else:
+            # i is perfect
+
+            if i == 0: max_of_left = B[j-1]
+            elif j == 0: max_of_left = A[i-1]
+            else: max_of_left = max(A[i-1], B[j-1])
+
+            if (m + n) % 2 == 1:
+                return max_of_left
+
+            if i == m: min_of_right = B[j]
+            elif j == n: min_of_right = A[i]
+            else: min_of_right = min(A[i], B[j])
+
+            return (max_of_left + min_of_right) / 2.0```
 

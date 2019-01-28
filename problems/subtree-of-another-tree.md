@@ -1,43 +1,62 @@
 #### Subtree of Another Tree
 
 ```java
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+    HashSet < String > trees = new HashSet < > ();
+    public boolean isSubtree(TreeNode s, TreeNode t) {
+        String tree1 = preorder(s, true);
+        String tree2 = preorder(t, true);
+        return tree1.indexOf(tree2) >= 0;
+    }
+    public String preorder(TreeNode t, boolean left) {
+        if (t == null) {
+            if (left)
+                return "lnull";
+            else
+                return "rnull";
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return "#"+t.val + " " +preorder(t.left, true)+" " +preorder(t.right, false);
     }
 }```
 
 
 ```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+ 
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+    public boolean isSubtree(TreeNode s, TreeNode t) {
+        return traverse(s,t);
     }
-}```
+    public boolean equals(TreeNode x,TreeNode y)
+    {
+        if(x==null && y==null)
+            return true;
+        if(x==null || y==null)
+            return false;
+        return x.val==y.val && equals(x.left,y.left) && equals(x.right,y.right);
+    }
+    public boolean traverse(TreeNode s,TreeNode t)
+    {
+        return  s!=null && ( equals(s,t) || traverse(s.left,t) || traverse(s.right,t));
+    }
+}
+```
 

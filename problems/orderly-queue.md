@@ -1,22 +1,28 @@
 #### Orderly Queue
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public String orderlyQueue(String S, int K) {
+        if (K == 1) {
+            String ans = S;
+            for (int i = 0; i < S.length(); ++i) {
+                String T = S.substring(i) + S.substring(0, i);
+                if (T.compareTo(ans) < 0) ans = T;
             }
+            return ans;
+        } else {
+            char[] ca = S.toCharArray();
+            Arrays.sort(ca);
+            return new String(ca);
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
     }
 }```
+
+
+```python
+class Solution(object):
+    def orderlyQueue(self, S, K):
+        if K == 1:
+            return min(S[i:] + S[:i] for i in range(len(S)))
+        return "".join(sorted(S))```
 

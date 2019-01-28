@@ -1,22 +1,130 @@
 #### Search in Rotated Sorted Array
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+class Solution {
+  int [] nums;
+  int target;
+
+  public int find_rotate_index(int left, int right) {
+    if (nums[left] < nums[right])
+      return 0;
+
+    while (left <= right) {
+      int pivot = (left + right) / 2;
+      if (nums[pivot] > nums[pivot + 1])
+        return pivot + 1;
+      else {
+        if (nums[pivot] < nums[left])
+          right = pivot - 1;
+        else
+          left = pivot + 1;
+      }
     }
+    return 0;
+  }
+
+  public int search(int left, int right) {
+    /*
+    Binary search
+    */
+    while (left <= right) {
+      int pivot = (left + right) / 2;
+      if (nums[pivot] == target)
+        return pivot;
+      else {
+        if (target < nums[pivot])
+          right = pivot - 1;
+        else
+          left = pivot + 1;
+      }
+    }
+    return -1;
+  }
+
+  public int search(int[] nums, int target) {
+    this.nums = nums;
+    this.target = target;
+
+    int n = nums.length;
+
+    if (n == 0)
+      return -1;
+    if (n == 1)
+      return this.nums[0] == target ? 0 : -1;
+
+    int rotate_index = find_rotate_index(0, n - 1);
+
+    // if target is the smallest element
+    if (nums[rotate_index] == target)
+      return rotate_index;
+    // if array is not rotated, search in the entire array
+    if (rotate_index == 0)
+      return search(0, n - 1);
+    if (target < nums[0])
+      // search in the right side
+      return search(rotate_index, n - 1);
+    // search in the left side
+    return search(0, rotate_index);
+  }
 }```
+
+
+```python
+class Solution:
+    def search(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: int
+        """
+        def find_rotate_index(left, right):
+            if nums[left] < nums[right]:
+                return 0
+            
+            while left <= right:
+                pivot = (left + right) // 2
+                if nums[pivot] > nums[pivot + 1]:
+                    return pivot + 1
+                else:
+                    if nums[pivot] < nums[left]:
+                        right = pivot - 1
+                    else:
+                        left = pivot + 1
+                
+        def search(left, right):
+            """
+            Binary search
+            """
+            while left <= right:
+                pivot = (left + right) // 2
+                if nums[pivot] == target:
+                    return pivot
+                else:
+                    if target < nums[pivot]:
+                        right = pivot - 1
+                    else:
+                        left = pivot + 1
+            return -1
+        
+        n = len(nums)
+        
+        if n == 0:
+            return -1
+        if n == 1:
+            return 0 if nums[0] == target else -1 
+        
+        rotate_index = find_rotate_index(0, n - 1)
+        
+        # if target is the smallest element
+        if nums[rotate_index] == target:
+            return rotate_index
+        # if array is not rotated, search in the entire array
+        if rotate_index == 0:
+            return search(0, n - 1)
+        if target < nums[0]:
+            # search on the right side
+            return search(rotate_index, n - 1)
+        # search on the left side
+        return search(0, rotate_index)
+```
 

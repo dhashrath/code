@@ -1,43 +1,72 @@
 #### Reverse Only Letters
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+class Solution {
+    public String reverseOnlyLetters(String S) {
+        Stack<Character> letters = new Stack();
+        for (char c: S.toCharArray())
+            if (Character.isLetter(c))
+                letters.push(c);
+
+        StringBuilder ans = new StringBuilder();
+        for (char c: S.toCharArray()) {
+            if (Character.isLetter(c))
+                ans.append(letters.pop());
+            else
+                ans.append(c);
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        return ans.toString();
     }
 }```
+
+
+```python
+class Solution(object):
+    def reverseOnlyLetters(self, S):
+        letters = [c for c in S if c.isalpha()]
+        ans = []
+        for c in S:
+            if c.isalpha():
+                ans.append(letters.pop())
+            else:
+                ans.append(c)
+        return "".join(ans)```
 
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public String reverseOnlyLetters(String S) {
+        StringBuilder ans = new StringBuilder();
+        int j = S.length() - 1;
+        for (int i = 0; i < S.length(); ++i) {
+            if (Character.isLetter(S.charAt(i))) {
+                while (!Character.isLetter(S.charAt(j)))
+                    j--;
+                ans.append(S.charAt(j--));
+            } else {
+                ans.append(S.charAt(i));
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        return ans.toString();
     }
 }```
+
+
+```python
+class Solution(object):
+    def reverseOnlyLetters(self, S):
+        ans = []
+        j = len(ans) - 1
+        for i, x in enumerate(S):
+            if x.isalpha():
+                while not S[j].isalpha():
+                    j -= 1
+                ans.append(S[j])
+                j -= 1
+            else:
+                ans.append(x)
+        
+        return "".join(ans)```
 

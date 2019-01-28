@@ -1,22 +1,52 @@
 #### Smallest Rotation with Highest Score
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public int bestRotation(int[] A) {
+        int N = A.length;
+        int[] bad = new int[N];
+        for (int i = 0; i < N; ++i) {
+            int left = (i - A[i] + 1 + N) % N;
+            int right = (i + 1) % N;
+            bad[left]--;
+            bad[right]++;
+            if (left > right)
+                bad[0]--;
+        }
+
+        int best = -N;
+        int ans = 0, cur = 0;
+        for (int i = 0; i < N; ++i) {
+            cur += bad[i];
+            if (cur > best) {
+                best = cur;
+                ans = i;
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object):
+    def bestRotation(self, A):
+        N = len(A)
+        bad = [0] * N
+        for i, x in enumerate(A):
+            left, right = (i - x + 1) % N, (i + 1) % N
+            bad[left] -= 1
+            bad[right] += 1
+            if left > right:
+                bad[0] -= 1
+
+        best = -N
+        ans = cur = 0
+        for i, score in enumerate(bad):
+            cur += score
+            if cur > best:
+                best = cur
+                ans = i
+
+        return ans```
 

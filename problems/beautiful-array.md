@@ -1,22 +1,42 @@
 #### Beautiful Array
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+class Solution {
+    Map<Integer, int[]> memo;
+    public int[] beautifulArray(int N) {
+        memo = new HashMap();
+        return f(N);
+    }
+
+    public int[] f(int N) {
+        if (memo.containsKey(N))
+            return memo.get(N);
+
+        int[] ans = new int[N];
+        if (N == 1) {
+            ans[0] = 1;
+        } else {
+            int t = 0;
+            for (int x: f((N+1)/2))  // odds
+                ans[t++] = 2*x - 1;
+            for (int x: f(N/2))  // evens
+                ans[t++] = 2*x;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        memo.put(N, ans);
+        return ans;
     }
 }```
+
+
+```python
+class Solution:
+    def beautifulArray(self, N):
+        memo = {1: [1]}
+        def f(N):
+            if N not in memo:
+                odds = f((N+1)/2)
+                evens = f(N/2)
+                memo[N] = [2*x-1 for x in odds] + [2*x for x in evens]
+            return memo[N]
+        return f(N)```
 

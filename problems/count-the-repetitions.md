@@ -1,43 +1,52 @@
 #### Count The Repetitions
 
-```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+```cpp
+int getMaxRepetitions(string s1, int n1, string s2, int n2)
+{
+    int index = 0, repeat_count = 0;
+    int s1_size = s1.size(), s2_size = s2.size();
+    for (int i = 0; i < n1; i++) {
+        for (int j = 0; j < s1_size; j++) {
+            if (s1[j] == s2[index])
+                ++index;
+            if (index == s2_size) {
+                index = 0;
+                ++repeat_count;
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
     }
+    return repeat_count / n2;
 }```
 
 
-```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+```cpp
+int getMaxRepetitions(string s1, int n1, string s2, int n2)
+{
+    if (n1 == 0)
+        return 0;
+    int indexr[s2.size() + 1] = { 0 }; // index at start of each s1 block
+    int countr[s2.size() + 1] = { 0 }; // count of repititions till the present s1 block
+    int index = 0, count = 0;
+    for (int i = 0; i < n1; i++) {
+        for (int j = 0; j < s1.size(); j++) {
+            if (s1[j] == s2[index])
+                ++index;
+            if (index == s2.size()) {
+                index = 0;
+                ++count;
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        countr[i] = count;
+        indexr[i] = index;
+        for (int k = 0; k < i; k++) {
+            if (indexr[k] == index) {
+                int prev_count = countr[k];
+                int pattern_count = (countr[i] - countr[k]) * (n1 - 1 - k) / (i - k);
+                int remain_count = countr[k + (n1 - 1 - k) % (i - k)] - countr[k];
+                return (prev_count + pattern_count + remain_count) / n2;
+            }
+        }
     }
+    return countr[n1 - 1] / n2;
 }```
 

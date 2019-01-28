@@ -1,43 +1,86 @@
 #### Find and Replace Pattern
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+class Solution {
+    public List<String> findAndReplacePattern(String[] words, String pattern) {
+        List<String> ans = new ArrayList();
+        for (String word: words)
+            if (match(word, pattern))
+                ans.add(word);
+        return ans;
+    }
+
+    public boolean match(String word, String pattern) {
+        Map<Character, Character> m1 = new HashMap();
+        Map<Character, Character> m2 = new HashMap();
+
+        for (int i = 0; i < word.length(); ++i) {
+            char w = word.charAt(i);
+            char p = pattern.charAt(i);
+            if (!m1.containsKey(w)) m1.put(w, p);
+            if (!m2.containsKey(p)) m2.put(p, w);
+            if (m1.get(w) != p || m2.get(p) != w)
+                return false;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        return true;
     }
 }```
+
+
+```python
+class Solution(object):
+    def findAndReplacePattern(self, words, pattern):
+        def match(word):
+            m1, m2 = {}, {}
+            for w, p in zip(word, pattern):
+                if w not in m1: m1[w] = p
+                if p not in m2: m2[p] = w
+                if (m1[w], m2[p]) != (p, w):
+                    return False
+            return True
+
+        return filter(match, words)```
 
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+class Solution {
+    public List<String> findAndReplacePattern(String[] words, String pattern) {
+        List<String> ans = new ArrayList();
+        for (String word: words)
+            if (match(word, pattern))
+                ans.add(word);
+        return ans;
+    }
+
+    public boolean match(String word, String pattern) {
+        Map<Character, Character> M = new HashMap();
+        for (int i = 0; i < word.length(); ++i) {
+            char w = word.charAt(i);
+            char p = pattern.charAt(i);
+            if (!M.containsKey(w)) M.put(w, p);
+            if (M.get(w) != p) return false;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        boolean[] seen = new boolean[26];
+        for (char p: M.values()) {
+            if (seen[p - 'a']) return false;
+            seen[p - 'a'] = true;
+        }
+        return true;
     }
 }```
+
+
+```python
+class Solution(object):
+    def findAndReplacePattern(self, words, pattern):
+        def match(word):
+            P = {}
+            for x, y in zip(pattern, word):
+                if P.setdefault(x, y) != y:
+                    return False
+            return len(set(P.values())) == len(P.values())
+
+        return filter(match, words)```
 

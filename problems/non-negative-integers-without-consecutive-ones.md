@@ -2,63 +2,66 @@
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+    public int findIntegers(int num) {
+        int count = 0;
+        for (int i = 0; i <= num; i++)
+            if (check(i))
+                count++;
+        return count;
+    }
+    public boolean check(int n) {
+        int i = 31;
+        while (i > 0) {
+            if ((n & (1 << i)) != 0 && (n & (1 << (i - 1))) != 0)
+                return false;
+            i--;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return true;
+    }
+}
+```
+
+
+```java
+public class Solution {
+    public int findIntegers(int num) {
+        return find(0, 0, num, false);
+    }
+    public int find(int i, int sum, int num, boolean prev) {
+        if (sum > num)
+            return 0;
+        if (1<<i > num)
+            return 1;
+        if (prev)
+            return find(i + 1, sum, num, false);
+        return find(i + 1, sum, num, false) + find(i + 1, sum + (1 << i), num, true);
     }
 }```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
+    public int findIntegers(int num) {
+        int[] f = new int[32];
+        f[0] = 1;
+        f[1] = 2;
+        for (int i = 2; i < f.length; i++)
+            f[i] = f[i - 1] + f[i - 2];
+        int i = 30, sum = 0, prev_bit = 0;
+        while (i >= 0) {
+            if ((num & (1 << i)) != 0) {
+                sum += f[i];
+                if (prev_bit == 1) {
+                    sum--;
+                    break;
                 }
-            }
+                prev_bit = 1;
+            } else
+                prev_bit = 0;
+            i--;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return sum + 1;
     }
-}```
-
-
-```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
-    }
-}```
+}
+```
 

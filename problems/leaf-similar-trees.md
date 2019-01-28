@@ -1,22 +1,57 @@
 #### Leaf-Similar Trees
 
+```cpp
+class Solution {
+public:
+    bool leafSimilar(TreeNode* root1, TreeNode* root2) {
+        vector<int> leaves1;
+        vector<int> leaves2;
+        dfs(root1, leaves1);
+        dfs(root2, leaves2);
+
+        return leaves1 == leaves2;
+    }
+
+    void dfs(TreeNode* node, vector<int>& leaves) {
+        if (node == NULL) return;
+        if (node->left == NULL && node->right == NULL)
+            leaves.push_back(node->val);
+        dfs(node->left, leaves);
+        dfs(node->right, leaves);
+    }
+};```
+
+
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+class Solution {
+    public boolean leafSimilar(TreeNode root1, TreeNode root2) {
+        List<Integer> leaves1 = new ArrayList();
+        List<Integer> leaves2 = new ArrayList();
+        dfs(root1, leaves1);
+        dfs(root2, leaves2);
+        return leaves1.equals(leaves2);
+    }
+
+    public void dfs(TreeNode node, List<Integer> leafValues) {
+        if (node != null) {
+            if (node.left == null && node.right == null)
+                leafValues.add(node.val);
+            dfs(node.left, leafValues);
+            dfs(node.right, leafValues);
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
     }
 }```
+
+
+```python3
+class Solution:
+    def leafSimilar(self, root1, root2):
+        def dfs(node):
+            if node:
+                if not node.left and not node.right:
+                    yield node.val
+                yield from dfs(node.left)
+                yield from dfs(node.right)
+
+        return list(dfs(root1)) == list(dfs(root2))```
 

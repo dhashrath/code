@@ -1,22 +1,30 @@
 #### Flipping an Image
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public int[][] flipAndInvertImage(int[][] A) {
+        int C = A[0].length;
+        for (int[] row: A)
+            for (int i = 0; i < (C + 1) / 2; ++i) {
+                int tmp = row[i] ^ 1;
+                row[i] = row[C - 1 - i] ^ 1;
+                row[C - 1 - i] = tmp;
             }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        return A;
     }
 }```
+
+
+```python
+class Solution(object):
+    def flipAndInvertImage(self, A):
+        for row in A:
+            for i in xrange((len(row) + 1) / 2):
+                """
+                In Python, the shortcut row[~i] = row[-i-1] = row[len(row) - 1 - i]
+                helps us find the i-th value of the row, counting from the right.
+                """
+                row[i], row[~i] = row[~i] ^ 1, row[i] ^ 1
+        return A```
 

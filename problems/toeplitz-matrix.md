@@ -1,43 +1,51 @@
 #### Toeplitz Matrix
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public boolean isToeplitzMatrix(int[][] matrix) {
+        Map<Integer, Integer> groups = new HashMap();
+        for (int r = 0; r < matrix.length; ++r) {
+            for (int c = 0; c < matrix[0].length; ++c) {
+                if (!groups.containsKey(r-c))
+                    groups.put(r-c, matrix[r][c]);
+                else if (groups.get(r-c) != matrix[r][c])
+                    return False;
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return True;
     }
 }```
+
+
+```python
+class Solution(object):
+    def isToeplitzMatrix(self, matrix):
+        groups = {}
+        for r, row in enumerate(matrix):
+            for c, val in enumerate(row):
+                if r-c not in groups:
+                    groups[r-c] = val
+                elif groups[r-c] != val:
+                    return False
+        return True```
 
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+class Solution {
+    public boolean isToeplitzMatrix(int[][] matrix) {
+        for (int r = 0; r < matrix.length; ++r)
+            for (int c = 0; c < matrix[0].length; ++c)
+                if (r > 0 && c > 0 && matrix[r-1][c-1] != matrix[r][c])
+                    return false;
+        return true;
     }
 }```
+
+
+```python
+class Solution(object):
+    def isToeplitzMatrix(self, matrix):
+        return all(r == 0 or c == 0 or matrix[r-1][c-1] == val
+                   for r, row in enumerate(matrix)
+                   for c, val in enumerate(row))```
 

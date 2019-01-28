@@ -1,22 +1,36 @@
 #### Masking Personal Information
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+class Solution {
+    public String maskPII(String S) {
+        int atIndex = S.indexOf('@');
+        if (atIndex >= 0) { // email
+            return (S.substring(0, 1) + "*****" + S.substring(atIndex - 1)).toLowerCase();
+        } else { // phone
+            String digits = S.replaceAll("\\D+", "");
+            String local = "***-***-" + digits.substring(digits.length() - 4);
+            if (digits.length() == 10) return local;
+            String ans = "+";
+            for (int i = 0; i < digits.length() - 10; ++i)
+                ans += "*";
+            return ans + "-" + local;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
     }
 }```
+
+
+```python
+class Solution(object):
+    def maskPII(self, S):
+        if '@' in S: #email
+            first, after = S.split('@')
+            return "{}*****{}@{}".format(
+                first[0], first[-1], after).lower()
+
+        else: #phone
+            digits = filter(unicode.isdigit, S)
+            local = "***-***-{}".format(digits[-4:])
+            if len(digits) == 10:
+                return local
+            return "+{}-".format('*' * (len(digits) - 10)) + local```
 

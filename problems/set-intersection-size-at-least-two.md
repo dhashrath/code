@@ -1,22 +1,41 @@
 #### Set Intersection Size At Least Two
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public int intersectionSizeTwo(int[][] intervals) {
+        Arrays.sort(intervals, (a, b) ->
+                    a[0] != b[0] ? a[0]-b[0] : b[1]-a[1]);
+        int[] todo = new int[intervals.length];
+        Arrays.fill(todo, 2);
+        int ans = 0, t = intervals.length;
+        while (--t >= 0) {
+            int s = intervals[t][0];
+            int e = intervals[t][1];
+            int m = todo[t];
+            for (int p = s; p < s+m; ++p) {
+                for (int i = 0; i <= t; ++i)
+                    if (todo[i] > 0 && p <= intervals[i][1])
+                        todo[i]--;
+                ans++;
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object):
+    def intersectionSizeTwo(self, intervals):
+        intervals.sort(key = lambda (s, e): (s, -e))
+        todo = [2] * len(intervals)
+        ans = 0
+        while intervals:
+            (s, e), t = intervals.pop(), todo.pop()
+            for p in xrange(s, s+t):
+                for i, (s0, e0) in enumerate(intervals):
+                    if todo[i] and p <= e0:
+                        todo[i] -= 1
+                ans += 1
+        return ans```
 

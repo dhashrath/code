@@ -2,84 +2,97 @@
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+    public String findLongestWord(String s, List < String > d) {
+        HashSet < String > set = new HashSet < > (d);
+        List < String > l = new ArrayList < > ();
+        generate(s, "", 0, l);
+        String max_str = "";
+        for (String str: l) {
+            if (set.contains(str))
+                if (str.length() > max_str.length() || (str.length() == max_str.length() && str.compareTo(max_str) < 0))
+                    max_str = str;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return max_str;
+    }
+    public void generate(String s, String str, int i, List < String > l) {
+        if (i == s.length())
+            l.add(str);
+        else {
+            generate(s, str + s.charAt(i), i + 1, l);
+            generate(s, str, i + 1, l);
+        }
+    }
+}
+```
+
+
+```java
+public class Solution {
+    public String findLongestWord(String s, List < String > d) {
+        HashSet < String > set = new HashSet < > (d);
+        List < String > l = new ArrayList < > ();
+        for (int i = 0; i < (1 << s.length()); i++) {
+            String t = "";
+            for (int j = 0; j < s.length(); j++) {
+                if (((i >> j) & 1) != 0)
+                    t += s.charAt(j);
+            }
+            l.add(t);
+        }
+        String max_str = "";
+        for (String str: l) {
+            if (set.contains(str))
+                if (str.length() > max_str.length() || (str.length() == max_str.length() && str.compareTo(max_str) < 0))
+                    max_str = str;
+        }
+        return max_str;
     }
 }```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+    public boolean isSubsequence(String x, String y) {
+        int j = 0;
+        for (int i = 0; i < y.length() && j < x.length(); i++)
+            if (x.charAt(j) == y.charAt(i))
+                j++;
+        return j == x.length();
     }
-}```
+    public String findLongestWord(String s, List < String > d) {
+        Collections.sort(d, new Comparator < String > () {
+            public int compare(String s1, String s2) {
+                return s2.length() != s1.length() ? s2.length() - s1.length() : s1.compareTo(s2);
+            }
+        });
+        for (String str: d) {
+            if (isSubsequence(str, s))
+                return str;
+        }
+        return "";
+    }
+}
+```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+    public boolean isSubsequence(String x, String y) {
+        int j = 0;
+        for (int i = 0; i < y.length() && j < x.length(); i++)
+            if (x.charAt(j) == y.charAt(i))
+                j++;
+        return j == x.length();
     }
-}```
-
-
-```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+    public String findLongestWord(String s, List < String > d) {
+        String max_str = "";
+        for (String str: d) {
+            if (isSubsequence(str, s)) {
+                if (str.length() > max_str.length() || (str.length() == max_str.length() && str.compareTo(max_str) < 0))
+                    max_str = str;
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return max_str;
     }
 }```
 

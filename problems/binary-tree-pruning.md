@@ -1,22 +1,32 @@
 #### Binary Tree Pruning
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+class Solution {
+    public TreeNode pruneTree(TreeNode root) {
+        return containsOne(root) ? root : null;
+    }
+
+    public boolean containsOne(TreeNode node) {
+        if (node == null) return false;
+        boolean a1 = containsOne(node.left);
+        boolean a2 = containsOne(node.right);
+        if (!a1) node.left = null;
+        if (!a2) node.right = null;
+        return node.val == 1 || a1 || a2;
     }
 }```
+
+
+```python
+class Solution(object):
+    def pruneTree(self, root):
+        def containsOne(node):
+            if not node: return False
+            a1 = containsOne(node.left)
+            a2 = containsOne(node.right)
+            if not a1: node.left = None
+            if not a2: node.right = None
+            return node.val == 1 or a1 or a2
+
+        return root if containsOne(root) else None```
 

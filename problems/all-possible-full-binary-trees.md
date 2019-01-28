@@ -1,22 +1,50 @@
 #### All Possible Full Binary Trees
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
+class Solution {
+    Map<Integer, List<TreeNode>> memo = new HashMap();
+
+    public List<TreeNode> allPossibleFBT(int N) {
+        if (!memo.containsKey(N)) {
+            List<TreeNode> ans = new LinkedList();
+            if (N == 1) {
+                ans.add(new TreeNode(0));
+            } else if (N % 2 == 1) {
+                for (int x = 0; x < N; ++x) {
+                    int y = N - 1 - x;
+                    for (TreeNode left: allPossibleFBT(x))
+                        for (TreeNode right: allPossibleFBT(y)) {
+                            TreeNode bns = new TreeNode(0);
+                            bns.left = left;
+                            bns.right = right;
+                            ans.add(bns);
+                        }
                 }
             }
+            memo.put(N, ans);
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        return memo.get(N);
     }
 }```
+
+
+```python
+class Solution(object):
+    memo = {0: [], 1: [TreeNode(0)]}
+
+    def allPossibleFBT(self, N):
+        if N not in Solution.memo:
+            ans = []
+            for x in xrange(N):
+                y = N - 1 - x
+                for left in self.allPossibleFBT(x):
+                    for right in self.allPossibleFBT(y):
+                        bns = TreeNode(0)
+                        bns.left = left
+                        bns.right = right
+                        ans.append(bns)
+            Solution.memo[N] = ans
+
+        return Solution.memo[N]```
 

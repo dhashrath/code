@@ -1,22 +1,27 @@
 #### Palindrome Number
 
-```java
+```csharp
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+    public bool IsPalindrome(int x) {
+        // Special cases:
+        // As discussed above, when x < 0, x is not a palindrome.
+        // Also if the last digit of the number is 0, in order to be a palindrome,
+        // the first digit of the number also needs to be 0.
+        // Only 0 satisfy this property.
+        if(x < 0 || (x % 10 == 0 && x != 0)) {
+            return false;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        int revertedNumber = 0;
+        while(x > revertedNumber) {
+            revertedNumber = revertedNumber * 10 + x % 10;
+            x /= 10;
+        }
+
+        // When the length is an odd number, we can get rid of the middle digit by revertedNumber/10
+        // For example when the input is 12321, at the end of the while loop we get x = 12, revertedNumber = 123,
+        // since the middle digit doesn't matter in palidrome(it will always equal to itself), we can simply get rid of it.
+        return x == revertedNumber || x == revertedNumber/10;
     }
 }```
 

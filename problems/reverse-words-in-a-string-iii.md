@@ -2,63 +2,63 @@
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+    public String reverseWords(String s) {
+        String words[] = s.split(" ");
+        StringBuilder res=new StringBuilder();
+        for (String word: words)
+            res.append(new StringBuffer(word).reverse().toString() + " ");
+        return res.toString().trim();
     }
 }```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+    public String reverseWords(String s) {
+        String words[] = split(s);
+        StringBuilder res=new StringBuilder();
+        for (String word: words)
+            res.append(reverse(word) + " ");
+        return res.toString().trim();
+    }
+    public String[] split(String s) {
+        ArrayList < String > words = new ArrayList < > ();
+        StringBuilder word = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == ' ') {
+                words.add(word.toString());
+                word = new StringBuilder();
+            } else
+                word.append( s.charAt(i));
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        words.add(word.toString());
+        return words.toArray(new String[words.size()]);
+    }
+    public String reverse(String s) {
+      StringBuilder res=new StringBuilder();
+        for (int i = 0; i < s.length(); i++)
+            res.insert(0,s.charAt(i));
+        return res.toString();
     }
 }```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+    public String reverseWords(String input) {
+        final StringBuilder result = new StringBuilder();
+        final StringBuilder word = new StringBuilder();
+        for (int i = 0; i < input.length(); i++) {
+            if (input.charAt(i) != ' ') {
+                word.append(input.charAt(i));
+            } else {
+                result.append(word.reverse());
+                result.append(" ");
+                word.setLength(0);
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        result.append(word.reverse());
+        return result.toString();
     }
 }```
 

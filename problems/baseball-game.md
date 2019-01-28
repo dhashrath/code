@@ -1,22 +1,45 @@
 #### Baseball Game
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public int calPoints(String[] ops) {
+        Stack<Integer> stack = new Stack();
+
+        for(String op : ops) {
+            if (op.equals("+")) {
+                int top = stack.pop();
+                int newtop = top + stack.peek();
+                stack.push(top);
+                stack.push(newtop);
+            } else if (op.equals("C")) {
+                stack.pop();
+            } else if (op.equals("D")) {
+                stack.push(2 * stack.peek());
+            } else {
+                stack.push(Integer.valueOf(op));
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        int ans = 0;
+        for(int score : stack) ans += score;
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object):
+    def calPoints(self, ops):
+        stack = []
+        for op in ops:
+            if op == '+':
+                stack.append(stack[-1] + stack[-2])
+            elif op == 'C':
+                stack.pop()
+            elif op == 'D':
+                stack.append(2 * stack[-1])
+            else:
+                stack.append(int(op))
+
+        return sum(stack)```
 

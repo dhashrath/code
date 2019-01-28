@@ -1,22 +1,40 @@
 #### Longest Turbulent Subarray
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public int maxTurbulenceSize(int[] A) {
+        int N = A.length;
+        int ans = 1;
+        int anchor = 0;
+
+        for (int i = 1; i < N; ++i) {
+            int c = Integer.compare(A[i-1], A[i]);
+            if (c == 0) {
+                anchor = i;
+            } else if (i == N-1 || c * Integer.compare(A[i], A[i+1]) != -1) {
+                ans = Math.max(ans, i - anchor + 1);
+                anchor = i;
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        return ans;
     }
 }```
+
+
+```python
+class Solution(object):
+    def maxTurbulenceSize(self, A):
+        N = len(A)
+        ans = 1
+        anchor = 0
+
+        for i in xrange(1, N):
+            c = cmp(A[i-1], A[i])
+            if c == 0:
+                anchor = i
+            elif i == N-1 or c * cmp(A[i], A[i+1]) != -1:
+                ans = max(ans, i - anchor + 1)
+                anchor = i
+        return ans```
 

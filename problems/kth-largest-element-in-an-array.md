@@ -1,43 +1,149 @@
 #### Kth Largest Element in an Array
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        // init heap 'the smallest element first'
+        PriorityQueue<Integer> heap =
+            new PriorityQueue<Integer>((n1, n2) -> n1 - n2);
+
+        // keep k largest elements in the heap
+        for (int n: nums) {
+          heap.add(n);
+          if (heap.size() > k)
+            heap.poll();
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
-    }
+
+        // output
+        return heap.poll();        
+  }
 }```
+
+
+```python
+class Solution:
+    def findKthLargest(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        return heapq.nlargest(k, nums)[-1]```
 
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+import java.util.Random;
+class Solution {
+  int [] nums;
+
+  public void swap(int a, int b) {
+    int tmp = this.nums[a];
+    this.nums[a] = this.nums[b];
+    this.nums[b] = tmp;
+  }
+
+
+  public int partition(int left, int right, int pivot_index) {
+    int pivot = this.nums[pivot_index];
+    // 1. move pivot to end
+    swap(pivot_index, right);
+    int store_index = left;
+
+    // 2. move all smaller elements to the left
+    for (int i = left; i <= right; i++) {
+      if (this.nums[i] < pivot) {
+        swap(store_index, i);
+        store_index++;
+      }
     }
+
+    // 3. move pivot to its final place
+    swap(store_index, right);
+
+    return store_index;
+  }
+
+  public int quickselect(int left, int right, int k_smallest) {
+    /*
+    Returns the k-th smallest element of list within left..right.
+    */
+
+    if (left == right) // If the list contains only one element,
+      return this.nums[left];  // return that element
+
+    // select a random pivot_index
+    Random random_num = new Random();
+    int pivot_index = left + random_num.nextInt(right - left); 
+    
+    pivot_index = partition(left, right, pivot_index);
+
+    // the pivot is on (N - k)th smallest position
+    if (k_smallest == pivot_index)
+      return this.nums[k_smallest];
+    // go left side
+    else if (k_smallest < pivot_index)
+      return quickselect(left, pivot_index - 1, k_smallest);
+    // go right side
+    return quickselect(pivot_index + 1, right, k_smallest);
+  }
+
+  public int findKthLargest(int[] nums, int k) {
+    this.nums = nums;
+    int size = nums.length;
+    // kth largest is (N - k)th smallest
+    return quickselect(0, size - 1, size - k);
+  }
 }```
+
+
+```python
+class Solution:
+    def findKthLargest(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        def partition(left, right, pivot_index):
+            pivot = nums[pivot_index]
+            # 1. move pivot to end
+            nums[pivot_index], nums[right] = nums[right], nums[pivot_index]  
+            
+            # 2. move all smaller elements to the left
+            store_index = left
+            for i in range(left, right):
+                if nums[i] < pivot:
+                    nums[store_index], nums[i] = nums[i], nums[store_index]
+                    store_index += 1
+
+            # 3. move pivot to its final place
+            nums[right], nums[store_index] = nums[store_index], nums[right]  
+            
+            return store_index
+        
+        def select(left, right, k_smallest):
+            """
+            Returns the k-th smallest element of list within left..right
+            """
+            if left == right:       # If the list contains only one element,
+                return nums[left]   # return that element
+            
+            # select a random pivot_index between 
+            pivot_index = random.randint(left, right)     
+                            
+            # find the pivot position in a sorted list   
+            pivot_index = partition(left, right, pivot_index)
+            
+            # the pivot is in its final sorted position
+            if k_smallest == pivot_index:
+                 return nums[k_smallest]
+            # go left
+            elif k_smallest < pivot_index:
+                return select(left, pivot_index - 1, k_smallest)
+            # go right
+            else:
+                return select(pivot_index + 1, right, k_smallest)
+
+        # kth largest is (n - k)th smallest 
+        return select(0, len(nums) - 1, len(nums) - k)```
 

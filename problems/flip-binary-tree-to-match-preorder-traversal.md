@@ -1,22 +1,71 @@
 #### Flip Binary Tree To Match Preorder Traversal
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    List<Integer> flipped;
+    int index;
+    int[] voyage;
+
+    public List<Integer> flipMatchVoyage(TreeNode root, int[] voyage) {
+        flipped = new ArrayList();
+        index = 0;
+        this.voyage = voyage;
+
+        dfs(root);
+        if (!flipped.isEmpty() && flipped.get(0) == -1) {
+            flipped.clear();
+            flipped.add(-1);
+        }
+
+        return flipped;
+    }
+
+    public void dfs(TreeNode node) {
+        if (node != null) {
+            if (node.val != voyage[index++]) {
+                flipped.clear();
+                flipped.add(-1);
+                return;
+            }
+
+            if (index < voyage.length && node.left != null &&
+                    node.left.val != voyage[index]) {
+                flipped.add(node.val);
+                dfs(node.right);
+                dfs(node.left);
+            } else {
+                dfs(node.left);
+                dfs(node.right);
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
     }
 }```
+
+
+```python
+class Solution(object):
+    def flipMatchVoyage(self, root, voyage):
+        self.flipped = []
+        self.i = 0
+
+        def dfs(node):
+            if node:
+                if node.val != voyage[self.i]:
+                    self.flipped = [-1]
+                    return
+                self.i += 1
+
+                if (self.i < len(voyage) and
+                        node.left and node.left.val != voyage[self.i]):
+                    self.flipped.append(node.val)
+                    dfs(node.right)
+                    dfs(node.left)
+                else:
+                    dfs(node.left)
+                    dfs(node.right)
+
+        dfs(root)
+        if self.flipped and self.flipped[0] == -1:
+            self.flipped = [-1]
+        return self.flipped```
 

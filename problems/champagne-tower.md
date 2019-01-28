@@ -1,22 +1,36 @@
 #### Champagne Tower
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
+class Solution {
+    public double champagneTower(int poured, int query_row, int query_glass) {
+        double[][] A = new double[102][102];
+        A[0][0] = (double) poured;
+        for (int r = 0; r <= query_row; ++r) {
+            for (int c = 0; c <= r; ++c) {
+                double q = (A[r][c] - 1.0) / 2.0;
+                if (q > 0) {
+                    A[r+1][c] += q;
+                    A[r+1][c+1] += q;
                 }
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        return Math.min(1, A[query_row][query_glass]);
     }
 }```
+
+
+```python
+class Solution(object):
+    def champagneTower(self, poured, query_row, query_glass):
+        A = [[0] * k for k in xrange(1, 102)]
+        A[0][0] = poured
+        for r in xrange(query_row + 1):
+            for c in xrange(r+1):
+                q = (A[r][c] - 1.0) / 2.0
+                if q > 0:
+                    A[r+1][c] += q
+                    A[r+1][c+1] += q
+
+        return min(1, A[query_row][query_glass])```
 

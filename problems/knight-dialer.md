@@ -1,22 +1,46 @@
 #### Knight Dialer
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
+class Solution {
+    public int knightDialer(int N) {
+        int MOD = 1_000_000_007;
+        int[][] moves = new int[][]{
+            {4,6},{6,8},{7,9},{4,8},{3,9,0},
+            {},{1,7,0},{2,6},{1,3},{2,4}};
+
+        int[][] dp = new int[2][10];
+        Arrays.fill(dp[0], 1);
+        for (int hops = 0; hops < N-1; ++hops) {
+            Arrays.fill(dp[~hops & 1], 0);
+            for (int node = 0; node < 10; ++node)
+                for (int nei: moves[node]) {
+                    dp[~hops & 1][nei] += dp[hops & 1][node];
+                    dp[~hops & 1][nei] %= MOD;
                 }
-            }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        long ans = 0;
+        for (int x: dp[~N & 1])
+            ans += x;
+        return (int) (ans % MOD);
     }
 }```
+
+
+```python
+class Solution(object):
+    def knightDialer(self, N):
+        MOD = 10**9 + 7
+        moves = [[4,6],[6,8],[7,9],[4,8],[3,9,0],[],
+                     [1,7,0],[2,6],[1,3],[2,4]]
+
+        dp = [1] * 10
+        for hops in xrange(N-1):
+            dp2 = [0] * 10
+            for node, count in enumerate(dp):
+                for nei in moves[node]:
+                    dp2[nei] += count
+                    dp2[nei] %= MOD
+            dp = dp2
+        return sum(dp) % MOD```
 

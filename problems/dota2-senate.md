@@ -1,22 +1,52 @@
 #### Dota2 Senate
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public String predictPartyVictory(String senate) {
+        Queue<Integer> queue = new LinkedList();
+        int[] people = new int[]{0, 0};
+        int[] bans = new int[]{0, 0};
+
+        for (char person: senate.toCharArray()) {
+            int x = person == 'R' ? 1 : 0;
+            people[x]++;
+            queue.add(x);
+        }
+
+        while (people[0] > 0 && people[1] > 0) {
+            int x = queue.poll();
+            if (bans[x] > 0) {
+                bans[x]--;
+                people[x]--;
+            } else {
+                bans[x^1]++;
+                queue.add(x);
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+
+        return people[1] > 0 ? "Radiant" : "Dire";
     }
 }```
+
+
+```python
+def predictPartyVictory(self, senate):
+    queue = collections.deque()
+    people, bans = [0, 0], [0, 0]
+
+    for person in senate:
+        x = person == 'R'
+        people[x] += 1
+        queue.append(x)
+
+    while all(people):
+        x = queue.popleft()
+        if bans[x]:
+            bans[x] -= 1
+            people[x] -= 1
+        else:
+            bans[x^1] += 1
+            queue.append(x)
+
+    return "Radiant" if people[1] else "Dire"```
 

@@ -1,22 +1,63 @@
 #### Permutations
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+class Solution {
+  public void backtrack(int n,
+                        ArrayList<Integer> nums,
+                        List<List<Integer>> output,
+                        int first) {
+    // if all integers are used up
+    if (first == n)
+      output.add(new ArrayList<Integer>(nums));
+    for (int i = first; i < n; i++) {
+      // place i-th integer first 
+      // in the current permutation
+      Collections.swap(nums, first, i);
+      // use next integers to complete the permutations
+      backtrack(n, nums, output, first + 1);
+      // backtrack
+      Collections.swap(nums, first, i);
     }
+  }
+
+  public List<List<Integer>> permute(int[] nums) {
+    // init output list
+    List<List<Integer>> output = new LinkedList();
+
+    // convert nums into list since the output is a list of lists
+    ArrayList<Integer> nums_lst = new ArrayList<Integer>();
+    for (int num : nums)
+      nums_lst.add(num);
+
+    int n = nums.length;
+    backtrack(n, nums_lst, output, 0);
+    return output;
+  }
 }```
+
+
+```python
+class Solution:
+    def permute(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        def backtrack(first = 0):
+            # if all integers are used up
+            if first == n:  
+                output.append(nums[:])
+            for i in range(first, n):
+                # place i-th integer first 
+                # in the current permutation
+                nums[first], nums[i] = nums[i], nums[first]
+                # use next integers to complete the permutations
+                backtrack(first + 1)
+                # backtrack
+                nums[first], nums[i] = nums[i], nums[first]
+        
+        n = len(nums)
+        output = []
+        backtrack()
+        return output```
 

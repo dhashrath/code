@@ -1,22 +1,39 @@
 #### Delete and Earn
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+class Solution {
+    public int deleteAndEarn(int[] nums) {
+        int[] count = new int[10001];
+        for (int x: nums) count[x]++;
+        int avoid = 0, using = 0, prev = -1;
+
+        for (int k = 0; k <= 10000; ++k) if (count[k] > 0) {
+            int m = Math.max(avoid, using);
+            if (k - 1 != prev) {
+                using = k * count[k] + m;
+                avoid = m;
+            } else {
+                using = k * count[k] + avoid;
+                avoid = m;
             }
+            prev = k;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return Math.max(avoid, using);
     }
 }```
+
+
+```python
+class Solution(object):
+    def deleteAndEarn(self, nums):
+        count = collections.Counter(nums)
+        prev = None
+        avoid = using = 0
+        for k in sorted(count):
+            if k - 1 != prev:
+                avoid, using = max(avoid, using), k * count[k] + max(avoid, using)
+            else:
+                avoid, using = max(avoid, using), k * count[k] + avoid
+            prev = k
+        return max(avoid, using)```
 

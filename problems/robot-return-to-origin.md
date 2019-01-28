@@ -1,22 +1,29 @@
 #### Robot Return to Origin
 
 ```java
-public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
+class Solution {
+    public boolean judgeCircle(String moves) {
+        int x = 0, y = 0;
+        for (char move: moves.toCharArray()) {
+            if (move == 'U') y--;
+            else if (move == 'D') y++;
+            else if (move == 'L') x--;
+            else if (move == 'R') x++;
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return x == 0 && y == 0;
     }
 }```
+
+
+```python
+class Solution(object):
+    def judgeCircle(self, moves):
+        x = y = 0
+        for move in moves:
+            if move == 'U': y -= 1
+            elif move == 'D': y += 1
+            elif move == 'L': x -= 1
+            elif move == 'R': x += 1
+
+        return x == y == 0```
 

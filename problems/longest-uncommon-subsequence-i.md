@@ -2,42 +2,38 @@
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
+    public int findLUSlength(String a, String b) {
+        HashMap < String, Integer > map = new HashMap < > ();
+        for (String s: new String[] {a, b}) {
+            for (int i = 0; i < (1 << s.length()); i++) {
+                String t = "";
+                for (int j = 0; j < s.length(); j++) {
+                    if (((i >> j) & 1) != 0)
+                        t += s.charAt(j);
                 }
+                if (map.containsKey(t))
+                    map.put(t, map.get(t) + 1);
+                else
+                    map.put(t, 1);
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        int res = -1;
+        for (String s: map.keySet()) {
+            if (map.get(s) == 1)
+                res = Math.max(res, s.length());
+        }
+        return res;
     }
-}```
+}
+```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
-            }
-        }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+    public int findLUSlength(String a, String b) {
+        if (a.equals(b))
+            return -1;
+        return Math.max(a.length(), b.length());
     }
 }```
 

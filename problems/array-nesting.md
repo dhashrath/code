@@ -2,63 +2,65 @@
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+    public int arrayNesting(int[] nums) {
+        int res = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int start = nums[i], count = 0;
+            do {
+                start = nums[start];
+                count++;
             }
+            while (start != nums[i]);
+            res = Math.max(res, count);
+
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return res;
     }
 }```
 
 
 ```java
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
+    public int arrayNesting(int[] nums) {
+        boolean[] visited = new boolean[nums.length];
+        int res = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (!visited[i]) {
+                int start = nums[i], count = 0;
+                do {
+                    start = nums[start];
+                    count++;
+                    visited[start] = true;
                 }
+                while (start != nums[i]);
+                res = Math.max(res, count);
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return res;
     }
-}```
+}
+```
 
 
 ```java
+
 public class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
+    public int arrayNesting(int[] nums) {
+        int res = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != Integer.MAX_VALUE) {
+                int start = nums[i], count = 0;
+                while (nums[start] != Integer.MAX_VALUE) {
+                    int temp = start;
+                    start = nums[start];
+                    count++;
+                    nums[temp] = Integer.MAX_VALUE;
                 }
+                res = Math.max(res, count);
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return res;
     }
-}```
+}
+```
 
