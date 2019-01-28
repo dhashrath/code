@@ -1,4 +1,4 @@
-#Arithmetic Slices
+#### Arithmetic Slices
 
 ```java
 public class Solution {

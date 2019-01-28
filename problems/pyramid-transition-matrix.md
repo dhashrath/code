@@ -1,4 +1,4 @@
-#Pyramid Transition Matrix
+#### Pyramid Transition Matrix
 
 ```java
 public class Solution {

@@ -1,3 +1,4 @@
+#Array of Doubled Pairs
 
 ```java
 public class Solution {

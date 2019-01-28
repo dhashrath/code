@@ -1,4 +1,4 @@
-#Champagne Tower
+#### Champagne Tower
 
 ```java
 public class Solution {

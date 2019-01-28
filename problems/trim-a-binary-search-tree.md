@@ -1,4 +1,4 @@
-#Trim a Binary Search Tree
+#### Trim a Binary Search Tree
 
 ```java
 public class Solution {

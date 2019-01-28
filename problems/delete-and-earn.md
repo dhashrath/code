@@ -1,4 +1,4 @@
-#Delete and Earn
+#### Delete and Earn
 
 ```java
 public class Solution {

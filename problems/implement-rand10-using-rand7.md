@@ -1,3 +1,4 @@
+#### Implement Rand10() Using Rand7()
 
 ```java
 public class Solution {

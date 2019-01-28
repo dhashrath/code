@@ -1,3 +1,4 @@
+#### Maximum Frequency Stack
 
 ```java
 public class Solution {

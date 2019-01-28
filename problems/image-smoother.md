@@ -1,4 +1,4 @@
-#Image Smoother
+#### Image Smoother
 
 ```java
 public class Solution {

@@ -1,3 +1,4 @@
+#Largest Component Size by Common Factor
 
 ```java
 public class Solution {

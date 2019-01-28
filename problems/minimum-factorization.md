@@ -1,4 +1,4 @@
-#Minimum Factorization
+#### Minimum Factorization
 
 ```java
 public class Solution {

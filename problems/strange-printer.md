@@ -1,4 +1,4 @@
-#Strange Printer
+#### Strange Printer
 
 ```java
 public class Solution {

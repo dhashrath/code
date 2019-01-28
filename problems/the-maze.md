@@ -1,4 +1,4 @@
-#The Maze
+#### The Maze
 
 ```java
 public class Solution {

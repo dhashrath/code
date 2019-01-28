@@ -1,3 +1,4 @@
+#Equal Rational Numbers
 
 ```java
 public class Solution {

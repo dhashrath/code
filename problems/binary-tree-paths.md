@@ -1,4 +1,4 @@
-#Binary Tree Paths
+#### Binary Tree Paths
 
 ```java
 public class Solution {

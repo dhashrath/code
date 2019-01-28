@@ -1,4 +1,4 @@
-#Goat Latin
+#### Goat Latin
 
 ```java
 public class Solution {

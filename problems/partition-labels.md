@@ -1,4 +1,4 @@
-#Partition Labels
+#### Partition Labels
 
 ```java
 public class Solution {

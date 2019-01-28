@@ -1,1 +1,1 @@
-#Average Salary: Departments VS Company
+#### Average Salary: Departments VS Company

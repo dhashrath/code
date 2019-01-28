@@ -1,4 +1,4 @@
-#Second Minimum Node In a Binary Tree
+#### Second Minimum Node In a Binary Tree
 
 ```java
 public class Solution {

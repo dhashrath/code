@@ -1,4 +1,4 @@
-#K Inverse Pairs Array
+#### K Inverse Pairs Array
 
 ```java
 public class Solution {

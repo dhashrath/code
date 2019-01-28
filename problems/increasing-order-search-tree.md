@@ -1,3 +1,4 @@
+#### Increasing Order Search Tree
 
 ```java
 public class Solution {

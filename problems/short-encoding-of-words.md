@@ -1,4 +1,4 @@
-#Short Encoding of Words
+#### Short Encoding of Words
 
 ```java
 public class Solution {

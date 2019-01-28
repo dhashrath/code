@@ -1,4 +1,4 @@
-#Majority Element
+#### Majority Element
 
 ```java
 public class Solution {

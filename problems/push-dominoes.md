@@ -1,4 +1,4 @@
-#Push Dominoes
+#### Push Dominoes
 
 ```java
 public class Solution {

@@ -1,3 +1,4 @@
+#### X of a Kind in a Deck of Cards
 
 ```java
 public class Solution {
@@ -39,4 +40,3 @@ public class Solution {
         return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
     }
 }```
-

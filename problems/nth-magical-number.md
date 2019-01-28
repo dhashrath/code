@@ -1,3 +1,4 @@
+#### Nth Magical Number
 
 ```java
 public class Solution {
